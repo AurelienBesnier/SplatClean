@@ -54,7 +54,7 @@ mouse_target = true
 
 [node name="SubViewport" type="SubViewport" parent="VBoxContainer/SubViewportContainer" unique_id=620041459]
 handle_input_locally = false
-size = Vector2i(1152, 2)
+size = Vector2i(1152, 602)
 render_target_update_mode = 4
 
 [node name="SplatScene" type="Node3D" parent="VBoxContainer/SubViewportContainer/SubViewport" unique_id=862694077]

@@ -29,7 +29,18 @@ func _ready() -> void:
 
 func _on_file_selected(path: String) -> void:
 	print("Attempting to open: ", path)
-	parse_ply_header(path)
+	if path.ends_with(".ply"):
+		parse_ply_header(path)
+	elif path.ends_with(".splat"):
+		parse_splat(path)
+
+func parse_splat(path: String) -> void:
+	var file = FileAccess.open(path, FileAccess.READ)
+	if not file: return
+	
+	# TODO: parse splat
+	file.close()
+	
 
 func parse_ply_header(path: String) -> void:
 	var file = FileAccess.open(path, FileAccess.READ)
