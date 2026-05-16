@@ -1,0 +1,78 @@
+[gd_scene format=3 uid="uid://drxlsccwjqlb0"]
+
+[ext_resource type="Script" uid="uid://banhwokdrg8ni" path="res://file_io.gd" id="1_0fbet"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0fbet"]
+transparency = 1
+vertex_color_use_as_albedo = true
+
+[sub_resource type="SphereMesh" id="SphereMesh_0fbet"]
+material = SubResource("StandardMaterial3D_0fbet")
+radius = 0.02
+height = 0.04
+radial_segments = 8
+rings = 8
+
+[sub_resource type="MultiMesh" id="MultiMesh_0fbet"]
+transform_format = 1
+use_colors = true
+mesh = SubResource("SphereMesh_0fbet")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_62e2m"]
+transparency = 1
+albedo_color = Color(1, 0, 1, 0.1254902)
+
+[sub_resource type="BoxMesh" id="BoxMesh_qtu10"]
+material = SubResource("StandardMaterial3D_62e2m")
+size = Vector3(2.2, 2.2, 2.2)
+
+[node name="Control" type="Control" unique_id=1717159827]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_0fbet")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1435058029]
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 644.0
+
+[node name="Top menu" type="HBoxContainer" parent="VBoxContainer" unique_id=360970999]
+layout_mode = 2
+
+[node name="OpenButton" type="Button" parent="VBoxContainer/Top menu" unique_id=342427875]
+layout_mode = 2
+text = "Open .ply"
+
+[node name="SaveButton" type="Button" parent="VBoxContainer/Top menu" unique_id=120952810]
+layout_mode = 2
+disabled = true
+text = "Save .ply"
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="VBoxContainer" unique_id=1999908508]
+layout_mode = 2
+mouse_target = true
+
+[node name="SubViewport" type="SubViewport" parent="VBoxContainer/SubViewportContainer" unique_id=620041459]
+handle_input_locally = false
+size = Vector2i(1152, 2)
+render_target_update_mode = 4
+
+[node name="SplatScene" type="Node3D" parent="VBoxContainer/SubViewportContainer/SubViewport" unique_id=862694077]
+
+[node name="Camera3D" type="Camera3D" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=1670005722]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 5)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=2035766139]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=713593165]
+
+[node name="SplatMeshInstance" type="MultiMeshInstance3D" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=2086659988]
+multimesh = SubResource("MultiMesh_0fbet")
+
+[node name="CropBox" type="MeshInstance3D" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=377722972]
+mesh = SubResource("BoxMesh_qtu10")
+
+[node name="OpenFileDialog" type="FileDialog" parent="." unique_id=245247398]
+title = "Open a File"
+file_mode = 0
+filters = PackedStringArray("*.ply ; Gaussian Splat Files")
