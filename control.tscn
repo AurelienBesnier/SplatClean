@@ -10,8 +10,8 @@ vertex_color_use_as_albedo = true
 material = SubResource("StandardMaterial3D_0fbet")
 radius = 0.02
 height = 0.04
-radial_segments = 8
-rings = 8
+radial_segments = 7
+rings = 7
 
 [sub_resource type="MultiMesh" id="MultiMesh_0fbet"]
 transform_format = 1
@@ -41,12 +41,12 @@ layout_mode = 2
 
 [node name="OpenButton" type="Button" parent="VBoxContainer/Top menu" unique_id=342427875]
 layout_mode = 2
-text = "Open .ply"
+text = "Open Splat (.ply, .splat)"
 
 [node name="SaveButton" type="Button" parent="VBoxContainer/Top menu" unique_id=120952810]
 layout_mode = 2
 disabled = true
-text = "Save .ply"
+text = "Save"
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="VBoxContainer" unique_id=1999908508]
 layout_mode = 2
@@ -75,4 +75,4 @@ mesh = SubResource("BoxMesh_qtu10")
 [node name="OpenFileDialog" type="FileDialog" parent="." unique_id=245247398]
 title = "Open a File"
 file_mode = 0
-filters = PackedStringArray("*.ply ; Gaussian Splat Files")
+filters = PackedStringArray("*.ply,*.splat; Gaussian Splat Files")

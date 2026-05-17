@@ -68,9 +68,10 @@ func parse_splat(path: String) -> void:
 		var scale_z = file.get_float()
 		
 		file.seek(splat_start_pos + color_offset)
-		var r = file.get_8()
-		var g = file.get_8()
-		var b = file.get_8()
+		var r = file.get_8() / 255.0
+		var g = file.get_8() / 255.0
+		var b = file.get_8() / 255.0
+		print(r," ",g," ",b)
 		
 		file.seek(splat_start_pos + rotation_offset)
 		var rot_x = file.get_8()
