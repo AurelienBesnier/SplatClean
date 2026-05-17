@@ -38,7 +38,51 @@ func parse_splat(path: String) -> void:
 	var file = FileAccess.open(path, FileAccess.READ)
 	if not file: return
 	
+	
+	vertex_count = 10000
+	is_binary = true
+	const position_offset = 0
+	const scale_offset = 12
+	const color_offset = 24
+	const rotation_offset = 28
+	const splat_size = 32
+	
+	var max_points_to_load = file.get_length() / splat_size # Change to limit number of loaded splats
+	
+	var multimesh: MultiMesh = splat_mesh_instance.multimesh
+	multimesh.instance_count = max_points_to_load
+	
+	print("Reading points and colors...")
 	# TODO: parse splat
+	for i in range(max_points_to_load):
+		var splat_start_pos = file.get_position()
+		file.seek(splat_start_pos + position_offset)
+		
+		var x = file.get_float()
+		var y = file.get_float()
+		var z = file.get_float()
+		
+		file.seek(splat_start_pos + scale_offset)
+		var scale_x = file.get_float()
+		var scale_y = file.get_float()
+		var scale_z = file.get_float()
+		
+		file.seek(splat_start_pos + color_offset)
+		var r = file.get_8()
+		var g = file.get_8()
+		var b = file.get_8()
+		
+		file.seek(splat_start_pos + rotation_offset)
+		var rot_x = file.get_8()
+		var rot_y = file.get_8()
+		var rot_z = file.get_8()
+		
+		var tx = Transform3D(Basis(), Vector3(x, y, z))
+		multimesh.set_instance_transform(i, tx)
+		multimesh.set_instance_color(i, Color(r, g, b, 255))
+		
+		file.seek(splat_start_pos + splat_size)
+
 	file.close()
 	
 
