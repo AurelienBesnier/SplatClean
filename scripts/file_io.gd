@@ -1,7 +1,9 @@
 extends Control
 
 @onready var open_file_dialog: FileDialog = $OpenFileDialog
+@onready var save_file_dialog: FileDialog = $SaveFileDialog
 @onready var open_button: Button = $"VBoxContainer/TopMenu/OpenButton"
+@onready var save_button: Button = $"VBoxContainer/TopMenu/SaveButton"
 @onready var splat_mesh_instance: MultiMeshInstance3D = $VBoxContainer/SubViewportContainer/SubViewport/SplatScene/SplatMeshInstance
 @onready var crop_box: MeshInstance3D = $VBoxContainer/SubViewportContainer/SubViewport/SplatScene/CropBox
 @onready var point_size_slider: HSlider = $"VBoxContainer/TopMenu/HSlider"
@@ -27,7 +29,12 @@ func _ready() -> void:
 	open_button.pressed.connect(func(): open_file_dialog.popup_centered_ratio(0.7))
 	# Connect the file dialog selection event
 	open_file_dialog.file_selected.connect(_on_file_selected)
+	
+	save_button.pressed.connect(func(): save_file_dialog.popup_centered_ratio(0.7))
+	
+	# Connect slider to function
 	point_size_slider.drag_ended.connect(_on_h_slider_drag_ended)
+	
 	
 	
 func _on_h_slider_drag_ended(value_changed) -> void:

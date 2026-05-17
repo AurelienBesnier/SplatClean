@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://banhwokdrg8ni" path="res://scripts/file_io.gd" id="1_0fbet"]
 [ext_resource type="Script" uid="uid://demefs1tns4yw" path="res://addons/goutte.camera.trackball/trackball_camera.gd" id="2_62e2m"]
+[ext_resource type="Shader" uid="uid://cdmeek01fhge6" path="res://shaders/wireframe.gdshader" id="3_ee4bf"]
 [ext_resource type="Script" uid="uid://dfq4qgslo7un1" path="res://scripts/crop_box.gd" id="3_qtu10"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qtu10"]
@@ -26,12 +27,15 @@ transform_format = 1
 use_colors = true
 mesh = SubResource("SphereMesh_ee4bf")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_62e2m"]
-transparency = 1
-albedo_color = Color(1, 0, 1, 0.1254902)
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ee4bf"]
+render_priority = 1
+shader = ExtResource("3_ee4bf")
+shader_parameter/wire_color = Color(0, 1, 0, 1)
+shader_parameter/base_color = Color(0, 0, 0, 0)
+shader_parameter/wire_width = 1.0
 
 [sub_resource type="BoxMesh" id="BoxMesh_qtu10"]
-material = SubResource("StandardMaterial3D_62e2m")
+material = SubResource("ShaderMaterial_ee4bf")
 size = Vector3(2.2, 2.2, 2.2)
 
 [node name="Control" type="Control" unique_id=1717159827]
@@ -53,7 +57,6 @@ text = "Open Splat (.ply, .splat)"
 
 [node name="SaveButton" type="Button" parent="VBoxContainer/TopMenu" unique_id=120952810]
 layout_mode = 2
-disabled = true
 text = "Save"
 
 [node name="SliderLabel" type="Label" parent="VBoxContainer/TopMenu" unique_id=1187876119]
@@ -111,3 +114,5 @@ transform = Transform3D(0.82253134, 0.40248942, -0.40180156, 0, 0.7065018, 0.707
 title = "Open a File"
 file_mode = 0
 filters = PackedStringArray("*.ply,*.splat; Gaussian Splat Files")
+
+[node name="SaveFileDialog" type="FileDialog" parent="." unique_id=1372098284]

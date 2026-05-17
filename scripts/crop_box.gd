@@ -4,6 +4,7 @@ extends MeshInstance3D
 @export var scale_down := &"crop_box_scale_down"
 @export var move_x := &"crop_box_move_x+"
 @export var move_minus_x := &"crop_box_move_x-"
+@export var select := &"select"
 
 const SCALE_INCREMENT = 0.01
 const MOVE_INCREMENT = 0.01
@@ -32,3 +33,9 @@ func process_actions(delta: float):
 	if Input.is_action_pressed(move_minus_x):
 		var pos = self.transform.origin
 		self.transform.origin.x -= MOVE_INCREMENT
+	if Input.is_action_pressed(select):
+		select_points()
+		
+func select_points():
+	var aabb = self.get_aabb()
+	aabb.get_
