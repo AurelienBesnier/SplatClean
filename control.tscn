@@ -1,23 +1,30 @@
 [gd_scene format=3 uid="uid://drxlsccwjqlb0"]
 
-[ext_resource type="Script" uid="uid://banhwokdrg8ni" path="res://file_io.gd" id="1_0fbet"]
+[ext_resource type="Script" uid="uid://banhwokdrg8ni" path="res://scripts/file_io.gd" id="1_0fbet"]
 [ext_resource type="Script" uid="uid://demefs1tns4yw" path="res://addons/goutte.camera.trackball/trackball_camera.gd" id="2_62e2m"]
+[ext_resource type="Script" uid="uid://dfq4qgslo7un1" path="res://scripts/crop_box.gd" id="3_qtu10"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0fbet"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qtu10"]
 transparency = 1
+shading_mode = 0
+disable_ambient_light = true
+disable_fog = true
+disable_specular_occlusion = true
 vertex_color_use_as_albedo = true
+disable_receive_shadows = true
+billboard_mode = 1
 
-[sub_resource type="SphereMesh" id="SphereMesh_0fbet"]
-material = SubResource("StandardMaterial3D_0fbet")
-radius = 0.02
-height = 0.04
+[sub_resource type="SphereMesh" id="SphereMesh_ee4bf"]
+material = SubResource("StandardMaterial3D_qtu10")
+radius = 0.01
+height = 0.02
 radial_segments = 7
 rings = 7
 
 [sub_resource type="MultiMesh" id="MultiMesh_0fbet"]
 transform_format = 1
 use_colors = true
-mesh = SubResource("SphereMesh_0fbet")
+mesh = SubResource("SphereMesh_ee4bf")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_62e2m"]
 transparency = 1
@@ -37,17 +44,38 @@ layout_mode = 0
 offset_right = 1152.0
 offset_bottom = 644.0
 
-[node name="Top menu" type="HBoxContainer" parent="VBoxContainer" unique_id=360970999]
+[node name="TopMenu" type="HBoxContainer" parent="VBoxContainer" unique_id=360970999]
 layout_mode = 2
 
-[node name="OpenButton" type="Button" parent="VBoxContainer/Top menu" unique_id=342427875]
+[node name="OpenButton" type="Button" parent="VBoxContainer/TopMenu" unique_id=342427875]
 layout_mode = 2
 text = "Open Splat (.ply, .splat)"
 
-[node name="SaveButton" type="Button" parent="VBoxContainer/Top menu" unique_id=120952810]
+[node name="SaveButton" type="Button" parent="VBoxContainer/TopMenu" unique_id=120952810]
 layout_mode = 2
 disabled = true
 text = "Save"
+
+[node name="SliderLabel" type="Label" parent="VBoxContainer/TopMenu" unique_id=1187876119]
+layout_mode = 2
+text = "Point Size"
+
+[node name="HSlider" type="HSlider" parent="VBoxContainer/TopMenu" unique_id=573125126]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+size_flags_stretch_ratio = 11.67
+tooltip_text = "Size of splat points"
+min_value = 0.001
+max_value = 0.1
+step = 0.001
+value = 0.001
+
+[node name="StatContainer" type="HBoxContainer" parent="VBoxContainer/TopMenu" unique_id=2016367552]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/TopMenu/StatContainer" unique_id=2002054961]
+layout_mode = 2
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="VBoxContainer" unique_id=1999908508]
 layout_mode = 2
@@ -55,7 +83,7 @@ mouse_target = true
 
 [node name="SubViewport" type="SubViewport" parent="VBoxContainer/SubViewportContainer" unique_id=620041459]
 handle_input_locally = false
-size = Vector2i(1152, 602)
+size = Vector2i(1280, 720)
 render_target_update_mode = 4
 
 [node name="SplatScene" type="Node3D" parent="VBoxContainer/SubViewportContainer/SubViewport" unique_id=862694077]
@@ -64,6 +92,7 @@ render_target_update_mode = 4
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
 current = true
 script = ExtResource("2_62e2m")
+zoom_minimum = 0.001
 metadata/_custom_type_script = "uid://demefs1tns4yw"
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=713593165]
@@ -73,6 +102,10 @@ multimesh = SubResource("MultiMesh_0fbet")
 
 [node name="CropBox" type="MeshInstance3D" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=377722972]
 mesh = SubResource("BoxMesh_qtu10")
+script = ExtResource("3_qtu10")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=1120566139]
+transform = Transform3D(0.82253134, 0.40248942, -0.40180156, 0, 0.7065018, 0.7077113, 0.5687198, -0.5821147, 0.58111984, 0, 0, 0)
 
 [node name="OpenFileDialog" type="FileDialog" parent="." unique_id=245247398]
 title = "Open a File"
