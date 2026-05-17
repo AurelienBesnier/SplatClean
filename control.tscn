@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://drxlsccwjqlb0"]
 
 [ext_resource type="Script" uid="uid://banhwokdrg8ni" path="res://file_io.gd" id="1_0fbet"]
+[ext_resource type="Script" uid="uid://demefs1tns4yw" path="res://addons/goutte.camera.trackball/trackball_camera.gd" id="2_62e2m"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0fbet"]
 transparency = 1
@@ -59,10 +60,11 @@ render_target_update_mode = 4
 
 [node name="SplatScene" type="Node3D" parent="VBoxContainer/SubViewportContainer/SubViewport" unique_id=862694077]
 
-[node name="Camera3D" type="Camera3D" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=1670005722]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 5)
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=2035766139]
+[node name="Camera3D" type="Camera3D" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=1169085170]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
+current = true
+script = ExtResource("2_62e2m")
+metadata/_custom_type_script = "uid://demefs1tns4yw"
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=713593165]
 

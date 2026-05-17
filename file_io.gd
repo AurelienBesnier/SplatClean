@@ -71,7 +71,6 @@ func parse_splat(path: String) -> void:
 		var r = file.get_8() / 255.0
 		var g = file.get_8() / 255.0
 		var b = file.get_8() / 255.0
-		print(r," ",g," ",b)
 		
 		file.seek(splat_start_pos + rotation_offset)
 		var rot_x = file.get_8()
@@ -80,7 +79,7 @@ func parse_splat(path: String) -> void:
 		
 		var tx = Transform3D(Basis(), Vector3(x, y, z))
 		multimesh.set_instance_transform(i, tx)
-		multimesh.set_instance_color(i, Color(r, g, b, 255))
+		multimesh.set_instance_color(i, Color(r, g, b, 1.0))
 		
 		file.seek(splat_start_pos + splat_size)
 
