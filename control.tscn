@@ -42,7 +42,6 @@ shader_parameter/wire_width = 1.0
 
 [sub_resource type="BoxMesh" id="BoxMesh_qtu10"]
 material = SubResource("ShaderMaterial_ee4bf")
-size = Vector3(2.2, 2.2, 2.2)
 
 [node name="Control" type="Control" unique_id=1717159827]
 layout_mode = 3
