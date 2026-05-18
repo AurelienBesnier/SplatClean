@@ -79,9 +79,9 @@ func parse_splat(path: String) -> void:
 		var z = file.get_float()
 		
 		file.seek(splat_start_pos + scale_offset)
-		var scale_x = file.get_float()
-		var scale_y = file.get_float()
-		var scale_z = file.get_float()
+		#var scale_x = file.get_float()
+		#var scale_y = file.get_float()
+		#var scale_z = file.get_float()
 		
 		file.seek(splat_start_pos + color_offset)
 		var r = file.get_8() / 255.0
@@ -89,9 +89,9 @@ func parse_splat(path: String) -> void:
 		var b = file.get_8() / 255.0
 		
 		file.seek(splat_start_pos + rotation_offset)
-		var rot_x = file.get_8()
-		var rot_y = file.get_8()
-		var rot_z = file.get_8()
+		#var rot_x = file.get_8()
+		#var rot_y = file.get_8()
+		#var rot_z = file.get_8()
 		
 		var tx = Transform3D(Basis(), Vector3(x, y, z))
 		multimesh.set_instance_transform(i, tx)

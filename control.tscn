@@ -2,8 +2,14 @@
 
 [ext_resource type="Script" uid="uid://banhwokdrg8ni" path="res://scripts/file_io.gd" id="1_0fbet"]
 [ext_resource type="Script" uid="uid://demefs1tns4yw" path="res://addons/goutte.camera.trackball/trackball_camera.gd" id="2_62e2m"]
-[ext_resource type="Shader" uid="uid://cdmeek01fhge6" path="res://shaders/wireframe.gdshader" id="3_ee4bf"]
+[ext_resource type="Shader" uid="uid://dbwyve1c5c45c" path="res://shaders/wireframe.gdshader" id="3_ee4bf"]
 [ext_resource type="Script" uid="uid://dfq4qgslo7un1" path="res://scripts/crop_box.gd" id="3_qtu10"]
+
+[sub_resource type="Sky" id="Sky_ee4bf"]
+
+[sub_resource type="Environment" id="Environment_kbped"]
+background_mode = 3
+sky = SubResource("Sky_ee4bf")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qtu10"]
 transparency = 1
@@ -17,10 +23,10 @@ billboard_mode = 1
 
 [sub_resource type="SphereMesh" id="SphereMesh_ee4bf"]
 material = SubResource("StandardMaterial3D_qtu10")
-radius = 0.01
-height = 0.02
-radial_segments = 7
-rings = 7
+radius = 0.005
+height = 0.01
+radial_segments = 4
+rings = 2
 
 [sub_resource type="MultiMesh" id="MultiMesh_0fbet"]
 transform_format = 1
@@ -99,6 +105,7 @@ zoom_minimum = 0.001
 metadata/_custom_type_script = "uid://demefs1tns4yw"
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=713593165]
+environment = SubResource("Environment_kbped")
 
 [node name="SplatMeshInstance" type="MultiMeshInstance3D" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=2086659988]
 multimesh = SubResource("MultiMesh_0fbet")
@@ -116,3 +123,4 @@ file_mode = 0
 filters = PackedStringArray("*.ply,*.splat; Gaussian Splat Files")
 
 [node name="SaveFileDialog" type="FileDialog" parent="." unique_id=1372098284]
+filters = PackedStringArray("*.splat, *.ply; Gaussian Splatting Files")

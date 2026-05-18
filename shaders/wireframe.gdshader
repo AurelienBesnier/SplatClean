@@ -1,8 +1,8 @@
 shader_type spatial;
-render_mode blend_mix, depth_draw_always, cull_back, unshaded;
+render_mode blend_mix, cull_disabled, unshaded;
 
 uniform vec4 wire_color : source_color = vec4(0.0, 1.0, 0.0, 1.0); 
-uniform vec4 base_color : source_color = vec4(0.0, 0.0, 0.0, 0.1); // Semi-transparent black
+uniform vec4 base_color : source_color = vec4(1.0, 1.0, 1.0, 0.3); // Semi-transparent black
 uniform float wire_width : hint_range(4.0, 7.0) = 4.0;
 
 varying vec3 v_barycentric;
