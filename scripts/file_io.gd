@@ -33,14 +33,13 @@ func _ready() -> void:
 	save_button.pressed.connect(func(): save_file_dialog.popup_centered_ratio(0.7))
 	
 	# Connect slider to function
-	point_size_slider.drag_ended.connect(_on_h_slider_drag_ended)
+	point_size_slider.value_changed.connect(_on_h_slider_value_changed)
 	
 	
 	
-func _on_h_slider_drag_ended(value_changed) -> void:
-	if value_changed:
-		splat_mesh_instance.multimesh.mesh.radius = point_size_slider.value
-		splat_mesh_instance.multimesh.mesh.height = point_size_slider.value * 2
+func _on_h_slider_value_changed(value) -> void:
+	splat_mesh_instance.multimesh.mesh.radius = value
+	splat_mesh_instance.multimesh.mesh.height = value * 2
 
 
 func _on_file_selected(path: String) -> void:
@@ -69,7 +68,6 @@ func parse_splat(path: String) -> void:
 	multimesh.instance_count = max_points_to_load
 	
 	print("Reading points and colors...")
-	# TODO: parse splat
 	for i in range(max_points_to_load):
 		var splat_start_pos = file.get_position()
 		file.seek(splat_start_pos + position_offset)
