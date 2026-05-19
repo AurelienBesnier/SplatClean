@@ -61,7 +61,6 @@ func _on_file_selected(path: String) -> void:
 	
 func _save_file() -> void:
 	print("saving file")
-	# /home/besniera/Bureau/export_godots/test.splat
 	var save_path = save_file_dialog.current_path
 
 	var file = FileAccess.open(save_path, FileAccess.WRITE)
