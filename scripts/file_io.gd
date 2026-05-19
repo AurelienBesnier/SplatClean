@@ -22,6 +22,12 @@ var g_offset: int = -1
 var b_offset: int = -1
 var opacity_offset: int = -1
 
+const position_offset = 0
+const scale_offset = 12
+const color_offset = 24
+const rotation_offset = 28
+const splat_size = 32
+
 # Spherical Harmonics constant used to normalize base color
 const SH_C0: float = 0.28209479177387814
 
@@ -32,6 +38,7 @@ func _ready() -> void:
 	open_file_dialog.file_selected.connect(_on_file_selected)
 	
 	save_button.pressed.connect(func(): save_file_dialog.popup_centered_ratio(0.7))
+	save_file_dialog.confirmed.connect(_save_file)
 	
 	# Connect slider to function
 	point_size_slider.value_changed.connect(_on_h_slider_value_changed)
@@ -51,18 +58,57 @@ func _on_file_selected(path: String) -> void:
 		parse_splat(path)
 	
 	number_label.text = "Number of Gaussians: " + str(vertex_count)
+	
+func _save_file() -> void:
+	print("saving file")
+	# /home/besniera/Bureau/export_godots/test.splat
+	var save_path = save_file_dialog.current_path
+
+	var file = FileAccess.open(save_path, FileAccess.WRITE)
+	if not file: 
+		print("Failed to create file: ", save_path)
+		return
+
+	for i in range(vertex_count):
+		var splat_start_pos = file.get_position()
+		
+		var col = splat_mesh_instance.multimesh.get_instance_color(i)
+		if col.a8 > 3 :
+			var pos = splat_mesh_instance.multimesh.get_instance_transform(i).origin
+			# Position
+			var x = pos.x
+			var y = pos.y
+			var z = pos.z
+			
+			file.store_float(x)
+			file.store_float(y)
+			file.store_float(z)
+			
+			# Scale
+			file.store_float(0.0)
+			file.store_float(0.0)
+			file.store_float(0.0)
+			
+			# Color
+			file.store_8(col.r8)
+			file.store_8(col.g8)
+			file.store_8(col.b8)
+			file.store_8(col.a8)
+			
+			# Rotation
+			file.store_8(0)
+			file.store_8(0)
+			file.store_8(0)
+			file.store_8(0)
+			
+
+	file.close()
 
 func parse_splat(path: String) -> void:
 	var file = FileAccess.open(path, FileAccess.READ)
 	if not file: return
 
 	is_binary = true
-	const position_offset = 0
-	const scale_offset = 12
-	const color_offset = 24
-	const rotation_offset = 28
-	const splat_size = 32
-	
 	var max_points_to_load = file.get_length() / splat_size # Change to limit number of loaded splats
 	vertex_count = max_points_to_load
 	

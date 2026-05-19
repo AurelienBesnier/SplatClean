@@ -124,7 +124,9 @@ transform = Transform3D(0.82253134, 0.40248942, -0.40180156, 0, 0.7065018, 0.707
 [node name="OpenFileDialog" type="FileDialog" parent="." unique_id=245247398]
 title = "Open a File"
 file_mode = 0
-filters = PackedStringArray("*.ply,*.splat; Gaussian Splat Files")
+access = 2
+filters = PackedStringArray("*.splat, *.ply; Gaussian Splatting Files")
 
 [node name="SaveFileDialog" type="FileDialog" parent="." unique_id=1372098284]
+access = 2
 filters = PackedStringArray("*.splat, *.ply; Gaussian Splatting Files")
