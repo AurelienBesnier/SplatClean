@@ -13,7 +13,7 @@ extends MeshInstance3D
 @export var reset := &"reset"
 
 @onready var splat_mesh_instance: MultiMeshInstance3D = $"../SplatMeshInstance"
-
+@onready var selected_label : Label = $"../../../../StatContainer/SelectedLabel"
 
 const SCALE_INCREMENT = 0.05
 const MOVE_INCREMENT = 0.05
@@ -59,18 +59,22 @@ func process_actions(delta: float):
 		
 func select_points() -> void:
 	var aabb = self.get_aabb()
+	var number_selected = 0
 	
 	for i in range(splat_mesh_instance.multimesh.instance_count):
 		var instance_transform = splat_mesh_instance.multimesh.get_instance_transform(i)
 		var global_pos = to_global(Vector3(instance_transform.origin.x,instance_transform.origin.y,
 			instance_transform.origin.z))
-		
+
 		if not aabb.has_point(global_pos):
 			var initial_color = splat_mesh_instance.multimesh.get_instance_color(i)
 			var hidden = initial_color
 			hidden.a8 = 3
 			splat_mesh_instance.multimesh.set_instance_color(i, hidden)
-			
+		else:
+			number_selected += 1
+	
+	selected_label.text = "Selected: " + str(number_selected)
 func cull_points() -> void:
 	for i in range(splat_mesh_instance.multimesh.instance_count):
 		var instance_col = splat_mesh_instance.multimesh.get_instance_color(i)

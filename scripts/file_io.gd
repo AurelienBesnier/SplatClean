@@ -7,6 +7,7 @@ extends Control
 @onready var splat_mesh_instance: MultiMeshInstance3D = $VBoxContainer/SubViewportContainer/SubViewport/SplatScene/SplatMeshInstance
 @onready var crop_box: MeshInstance3D = $VBoxContainer/SubViewportContainer/SubViewport/SplatScene/CropBox
 @onready var point_size_slider: HSlider = $"VBoxContainer/TopMenu/HSlider"
+@onready var number_label: Label = $"VBoxContainer/StatContainer/NumberLabel"
 
 # Struct to hold parsed metadata
 var vertex_count: int = 0
@@ -48,13 +49,13 @@ func _on_file_selected(path: String) -> void:
 		parse_ply_header(path)
 	elif path.ends_with(".splat"):
 		parse_splat(path)
+	
+	number_label.text = "Number of Gaussians: " + str(vertex_count)
 
 func parse_splat(path: String) -> void:
 	var file = FileAccess.open(path, FileAccess.READ)
 	if not file: return
-	
-	
-	vertex_count = 10000
+
 	is_binary = true
 	const position_offset = 0
 	const scale_offset = 12
@@ -63,6 +64,7 @@ func parse_splat(path: String) -> void:
 	const splat_size = 32
 	
 	var max_points_to_load = file.get_length() / splat_size # Change to limit number of loaded splats
+	vertex_count = max_points_to_load
 	
 	var multimesh: MultiMesh = splat_mesh_instance.multimesh
 	multimesh.instance_count = max_points_to_load

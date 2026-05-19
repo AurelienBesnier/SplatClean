@@ -79,11 +79,16 @@ max_value = 0.1
 step = 0.001
 value = 0.001
 
-[node name="StatContainer" type="HBoxContainer" parent="VBoxContainer/TopMenu" unique_id=2016367552]
+[node name="StatContainer" type="VBoxContainer" parent="VBoxContainer" unique_id=974785991]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/TopMenu/StatContainer" unique_id=2002054961]
+[node name="NumberLabel" type="Label" parent="VBoxContainer/StatContainer" unique_id=2002054961]
 layout_mode = 2
+text = "Number of Gaussians: "
+
+[node name="SelectedLabel" type="Label" parent="VBoxContainer/StatContainer" unique_id=689768568]
+layout_mode = 2
+text = "Selected: "
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="VBoxContainer" unique_id=1999908508]
 layout_mode = 2
