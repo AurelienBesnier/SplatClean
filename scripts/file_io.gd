@@ -68,20 +68,14 @@ func _save_file() -> void:
 		print("Failed to create file: ", save_path)
 		return
 
-	for i in range(vertex_count):
-		var splat_start_pos = file.get_position()
-		
+	for i in range(vertex_count):		
 		var col = splat_mesh_instance.multimesh.get_instance_color(i)
 		if col.a8 > 3 :
 			var pos = splat_mesh_instance.multimesh.get_instance_transform(i).origin
 			# Position
-			var x = pos.x
-			var y = pos.y
-			var z = pos.z
-			
-			file.store_float(x)
-			file.store_float(y)
-			file.store_float(z)
+			file.store_float(pos.x)
+			file.store_float(pos.y)
+			file.store_float(pos.z)
 			
 			# Scale
 			file.store_float(0.0)
@@ -99,7 +93,6 @@ func _save_file() -> void:
 			file.store_8(0)
 			file.store_8(0)
 			file.store_8(0)
-			
 
 	file.close()
 
