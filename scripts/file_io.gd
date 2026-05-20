@@ -22,11 +22,15 @@ var g_offset: int = -1
 var b_offset: int = -1
 var opacity_offset: int = -1
 
+# .splat format stuff
 const position_offset = 0
 const scale_offset = 12
 const color_offset = 24
 const rotation_offset = 28
 const splat_size = 32
+
+var scales: Array[float] = []
+var rotations: Array[int] = []
 
 # Spherical Harmonics constant used to normalize base color
 const SH_C0: float = 0.28209479177387814
@@ -42,9 +46,8 @@ func _ready() -> void:
 	
 	# Connect slider to function
 	point_size_slider.value_changed.connect(_on_h_slider_value_changed)
-	
-	
-	
+
+
 func _on_h_slider_value_changed(value) -> void:
 	splat_mesh_instance.multimesh.mesh.radius = value
 	splat_mesh_instance.multimesh.mesh.height = value * 2
@@ -78,9 +81,9 @@ func _save_file() -> void:
 			file.store_float(pos.z)
 			
 			# Scale
-			file.store_float(0.0)
-			file.store_float(0.0)
-			file.store_float(0.0)
+			file.store_float(scales[i*3+0])
+			file.store_float(scales[i*3+1])
+			file.store_float(scales[i*3+2])
 			
 			# Color
 			file.store_8(col.r8)
@@ -89,10 +92,10 @@ func _save_file() -> void:
 			file.store_8(col.a8)
 			
 			# Rotation
-			file.store_8(0)
-			file.store_8(0)
-			file.store_8(0)
-			file.store_8(0)
+			file.store_8(rotations[i*4+0])
+			file.store_8(rotations[i*4+1])
+			file.store_8(rotations[i*4+2])
+			file.store_8(rotations[i*4+3])
 
 	file.close()
 
@@ -117,23 +120,32 @@ func parse_splat(path: String) -> void:
 		var z = file.get_float()
 		
 		file.seek(splat_start_pos + scale_offset)
-		#var scale_x = file.get_float()
-		#var scale_y = file.get_float()
-		#var scale_z = file.get_float()
+		var scale_x = file.get_float()
+		var scale_y = file.get_float()
+		var scale_z = file.get_float()
+		scales.push_back(scale_x)
+		scales.push_back(scale_y)
+		scales.push_back(scale_z)
 		
 		file.seek(splat_start_pos + color_offset)
 		var r = file.get_8() / 255.0
 		var g = file.get_8() / 255.0
 		var b = file.get_8() / 255.0
+		var a = file.get_8() / 255.0
 		
 		file.seek(splat_start_pos + rotation_offset)
-		#var rot_x = file.get_8()
-		#var rot_y = file.get_8()
-		#var rot_z = file.get_8()
+		var rot_x = file.get_8()
+		var rot_y = file.get_8()
+		var rot_z = file.get_8()
+		var rot_t = file.get_8()
+		rotations.push_back(rot_x)
+		rotations.push_back(rot_y)
+		rotations.push_back(rot_z)
+		rotations.push_back(rot_t)
 		
 		var tx = Transform3D(Basis(), Vector3(x, y, z))
 		multimesh.set_instance_transform(i, tx)
-		multimesh.set_instance_color(i, Color(r, g, b, 1.0))
+		multimesh.set_instance_color(i, Color(r, g, b, a))
 		
 		file.seek(splat_start_pos + splat_size)
 
