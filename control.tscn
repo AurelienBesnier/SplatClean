@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://demefs1tns4yw" path="res://addons/goutte.camera.trackball/trackball_camera.gd" id="2_62e2m"]
 [ext_resource type="Shader" uid="uid://dbwyve1c5c45c" path="res://shaders/wireframe.gdshader" id="3_ee4bf"]
 [ext_resource type="Script" uid="uid://dfq4qgslo7un1" path="res://scripts/crop_box.gd" id="3_qtu10"]
+[ext_resource type="Script" uid="uid://cc2cnlquek3de" path="res://scripts/crop_sphere.gd" id="5_kbped"]
 
 [sub_resource type="Sky" id="Sky_ee4bf"]
 
@@ -37,23 +38,23 @@ mesh = SubResource("SphereMesh_ee4bf")
 render_priority = 1
 shader = ExtResource("3_ee4bf")
 shader_parameter/wire_color = Color(0, 1, 0, 1)
-shader_parameter/base_color = Color(0, 0, 0, 0)
-shader_parameter/wire_width = 1.0
+shader_parameter/base_color = Color(0, 0, 0, 0.05882353)
+shader_parameter/wire_width = 2.0000000475
 
 [sub_resource type="BoxMesh" id="BoxMesh_qtu10"]
 material = SubResource("ShaderMaterial_ee4bf")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kbped"]
-render_priority = 1
+render_priority = 0
 shader = ExtResource("3_ee4bf")
 shader_parameter/wire_color = Color(0, 1, 0, 1)
-shader_parameter/base_color = Color(0, 0, 0, 0.101960786)
-shader_parameter/wire_width = 1.8710000413725
+shader_parameter/base_color = Color(0, 0, 0, 0.1)
+shader_parameter/wire_width = 1.0
 
 [sub_resource type="SphereMesh" id="SphereMesh_fj5cn"]
 material = SubResource("ShaderMaterial_kbped")
 radial_segments = 10
-rings = 5
+rings = 10
 
 [node name="Control" type="Control" unique_id=1717159827]
 layout_mode = 3
@@ -133,10 +134,9 @@ visible = false
 mesh = SubResource("BoxMesh_qtu10")
 script = ExtResource("3_qtu10")
 
-[node name="CropSphere" type="MeshInstance3D" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=1631214055]
-visible = false
+[node name="CropSphere" type="MeshInstance3D" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=2051718283]
 mesh = SubResource("SphereMesh_fj5cn")
-script = ExtResource("3_qtu10")
+script = ExtResource("5_kbped")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=1120566139]
 transform = Transform3D(0.82253134, 0.40248942, -0.40180156, 0, 0.7065018, 0.7077113, 0.5687198, -0.5821147, 0.58111984, 0, 0, 0)
