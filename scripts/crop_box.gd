@@ -25,7 +25,8 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	process_actions(delta)
+	if self.visible:
+		process_actions(delta)
 	
 func process_actions(delta: float):
 	if Input.is_action_pressed(scale_up):

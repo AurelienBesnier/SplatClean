@@ -43,6 +43,18 @@ shader_parameter/wire_width = 1.0
 [sub_resource type="BoxMesh" id="BoxMesh_qtu10"]
 material = SubResource("ShaderMaterial_ee4bf")
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kbped"]
+render_priority = 1
+shader = ExtResource("3_ee4bf")
+shader_parameter/wire_color = Color(0, 1, 0, 1)
+shader_parameter/base_color = Color(0, 0, 0, 0.101960786)
+shader_parameter/wire_width = 1.8710000413725
+
+[sub_resource type="SphereMesh" id="SphereMesh_fj5cn"]
+material = SubResource("ShaderMaterial_kbped")
+radial_segments = 10
+rings = 5
+
 [node name="Control" type="Control" unique_id=1717159827]
 layout_mode = 3
 anchors_preset = 0
@@ -117,7 +129,13 @@ environment = SubResource("Environment_kbped")
 multimesh = SubResource("MultiMesh_0fbet")
 
 [node name="CropBox" type="MeshInstance3D" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=377722972]
+visible = false
 mesh = SubResource("BoxMesh_qtu10")
+script = ExtResource("3_qtu10")
+
+[node name="CropSphere" type="MeshInstance3D" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=1631214055]
+visible = false
+mesh = SubResource("SphereMesh_fj5cn")
 script = ExtResource("3_qtu10")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=1120566139]
