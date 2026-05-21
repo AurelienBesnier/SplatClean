@@ -56,6 +56,25 @@ material = SubResource("ShaderMaterial_kbped")
 radial_segments = 10
 rings = 10
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kbped"]
+shading_mode = 0
+disable_ambient_light = true
+disable_fog = true
+disable_specular_occlusion = true
+vertex_color_use_as_albedo = true
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_iy58a"]
+material = SubResource("StandardMaterial3D_kbped")
+radius = 0.005
+height = 0.01
+radial_segments = 10
+rings = 10
+
+[sub_resource type="MultiMesh" id="MultiMesh_6a6wx"]
+transform_format = 1
+mesh = SubResource("SphereMesh_iy58a")
+
 [node name="Control" type="Control" unique_id=1717159827]
 layout_mode = 3
 anchors_preset = 0
@@ -72,6 +91,10 @@ layout_mode = 2
 [node name="OpenButton" type="Button" parent="VBoxContainer/TopMenu" unique_id=342427875]
 layout_mode = 2
 text = "Open Splat (.ply, .splat)"
+
+[node name="CameraButton" type="Button" parent="VBoxContainer/TopMenu" unique_id=1559013295]
+layout_mode = 2
+text = "Open Camera (.json)"
 
 [node name="SaveButton" type="Button" parent="VBoxContainer/TopMenu" unique_id=120952810]
 layout_mode = 2
@@ -138,14 +161,20 @@ script = ExtResource("3_qtu10")
 mesh = SubResource("SphereMesh_fj5cn")
 script = ExtResource("5_kbped")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=1120566139]
-transform = Transform3D(0.82253134, 0.40248942, -0.40180156, 0, 0.7065018, 0.7077113, 0.5687198, -0.5821147, 0.58111984, 0, 0, 0)
+[node name="CameraMeshInstance" type="MultiMeshInstance3D" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=2062584244]
+multimesh = SubResource("MultiMesh_6a6wx")
 
 [node name="OpenFileDialog" type="FileDialog" parent="." unique_id=245247398]
 title = "Open a File"
 file_mode = 0
 access = 2
 filters = PackedStringArray("*.splat, *.ply; Gaussian Splatting Files")
+
+[node name="OpenCameraDialog" type="FileDialog" parent="." unique_id=1198926968]
+title = "Open a File"
+file_mode = 0
+access = 2
+filters = PackedStringArray("*.json; Camera position file")
 
 [node name="SaveFileDialog" type="FileDialog" parent="." unique_id=1372098284]
 access = 2

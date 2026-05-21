@@ -1,10 +1,13 @@
 extends Control
 
 @onready var open_file_dialog: FileDialog = $OpenFileDialog
+@onready var open_camera_dialog: FileDialog = $OpenCameraDialog
 @onready var save_file_dialog: FileDialog = $SaveFileDialog
 @onready var open_button: Button = $"VBoxContainer/TopMenu/OpenButton"
+@onready var camera_button: Button = $"VBoxContainer/TopMenu/CameraButton"
 @onready var save_button: Button = $"VBoxContainer/TopMenu/SaveButton"
 @onready var splat_mesh_instance: MultiMeshInstance3D = $VBoxContainer/SubViewportContainer/SubViewport/SplatScene/SplatMeshInstance
+@onready var camera_mesh_instance: MultiMeshInstance3D = $VBoxContainer/SubViewportContainer/SubViewport/SplatScene/CameraMeshInstance
 @onready var crop_box: MeshInstance3D = $VBoxContainer/SubViewportContainer/SubViewport/SplatScene/CropBox
 @onready var point_size_slider: HSlider = $"VBoxContainer/TopMenu/HSlider"
 @onready var number_label: Label = $"VBoxContainer/StatContainer/NumberLabel"
@@ -41,6 +44,10 @@ func _ready() -> void:
 	# Connect the file dialog selection event
 	open_file_dialog.file_selected.connect(_on_file_selected)
 	
+	# Same with other buttons
+	camera_button.pressed.connect(func(): open_camera_dialog.popup_centered_ratio(0.7))
+	open_camera_dialog.file_selected.connect(_camera_selected)
+	
 	save_button.pressed.connect(func(): save_file_dialog.popup_centered_ratio(0.7))
 	save_file_dialog.confirmed.connect(_save_file)
 	
@@ -51,7 +58,31 @@ func _ready() -> void:
 func _on_h_slider_value_changed(value) -> void:
 	splat_mesh_instance.multimesh.mesh.radius = value
 	splat_mesh_instance.multimesh.mesh.height = value * 2
+	
+	camera_mesh_instance.multimesh.mesh.radius = value
+	camera_mesh_instance.multimesh.mesh.height = value * 2
 
+func _camera_selected(path: String) -> void:
+	print("Selected camera file: ", path)
+	# Get contents
+	var file = FileAccess.open(path, FileAccess.READ)
+	var json_string = file.get_as_text()
+	file.close()
+	
+	var json = JSON.new()
+	var result = json.parse(json_string)
+	if result != OK:
+		print("JSON Parse Error: ", json.get_error_message(), " at line ", json.get_error_line())
+		return
+	camera_mesh_instance.multimesh.instance_count = len(json.data)
+	
+	var i: int = 0
+	for key in json.data:
+		var cam_pos = key['position']
+		
+		var tx = Transform3D(Basis(), Vector3(cam_pos[0], cam_pos[1], cam_pos[2]))
+		camera_mesh_instance.multimesh.set_instance_transform(i, tx)
+		i+=1
 
 func _on_file_selected(path: String) -> void:
 	print("Attempting to open: ", path)
