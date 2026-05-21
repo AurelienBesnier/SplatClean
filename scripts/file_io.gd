@@ -40,17 +40,21 @@ const splat_size = 32
 var scales: Array[float] = []
 var rotations: Array[int] = []
 
+var file_data: PackedByteArray # For web version
+var file_name_web: String # For web version
+var js_callback: JavaScriptObject
+
 # Spherical Harmonics constant used to normalize base color
 const SH_C0: float = 0.28209479177387814
 
 func _ready() -> void:
 	# Connect the button to open the file dialog
-	open_button.pressed.connect(func(): open_file_dialog.popup_centered_ratio(0.7))
+	open_button.pressed.connect(func(): handle_open_dialog(open_file_dialog))
 	# Connect the file dialog selection event
 	open_file_dialog.file_selected.connect(_on_file_selected)
 	
 	# Same with other buttons
-	camera_button.pressed.connect(func(): open_camera_dialog.popup_centered_ratio(0.7))
+	camera_button.pressed.connect(func(): handle_open_dialog(open_camera_dialog))
 	open_camera_dialog.file_selected.connect(_camera_selected)
 	
 	save_button.pressed.connect(func(): save_file_dialog.popup_centered_ratio(0.7))
@@ -62,6 +66,122 @@ func _ready() -> void:
 
 	# Connect slider to function
 	point_size_slider.value_changed.connect(_on_h_slider_value_changed)
+
+func handle_open_dialog(dialog):
+	if OS.has_feature("web"):
+		trigger_web_upload() # Custom JS implementation
+	else:
+		dialog.popup_centered_ratio(0.7)
+		
+func read_bytes_as_splat(data: PackedByteArray) -> void:
+	is_binary = true
+	var max_points_to_load = len(data) / splat_size
+	vertex_count = max_points_to_load
+	
+	var multimesh: MultiMesh = splat_mesh_instance.multimesh
+	multimesh.instance_count = max_points_to_load
+	
+	print("got ", max_points_to_load, " to load")
+	print("Reading points and colors...")
+	var i = 0
+	print(max_points_to_load)
+	while i < len(data):
+		i += position_offset
+		var x = data.decode_float(i)
+		var y = data.decode_float(i+4)
+		var z = data.decode_float(i+8)
+		
+		i += scale_offset
+		var scale_x = data.decode_float(i)
+		var scale_y = data.decode_float(i+4)
+		var scale_z = data.decode_float(i+8)
+		scales.push_back(scale_x)
+		scales.push_back(scale_y)
+		scales.push_back(scale_z)
+		
+		i += color_offset
+		var r = data.decode_u8(i) / 255.0
+		var g = data.decode_u8(i+1) / 255.0
+		var b = data.decode_u8(i+2) / 255.0
+		var a = data.decode_u8(i+3) / 255.0
+		
+		i += rotation_offset
+		var rot_x = data.decode_u8(i)
+		var rot_y = data.decode_u8(i+1)
+		var rot_z = data.decode_u8(i+2)
+		var rot_t = data.decode_u8(i+3)
+		rotations.push_back(rot_x)
+		rotations.push_back(rot_y)
+		rotations.push_back(rot_z)
+		rotations.push_back(rot_t)
+		
+		var tx = Transform3D(Basis(), Vector3(x, y, z))
+		multimesh.set_instance_transform(i, tx)
+		multimesh.set_instance_color(i, Color(r, g, b, a))
+		
+		i+=splat_size
+
+	
+func trigger_web_upload():
+	# JavaScript to inject a hidden file input and trigger it
+	var js_code = """
+	var input = document.createElement('input');
+	input.type = 'file';
+	input.accept = '.splat,.ply,.json';
+	
+	input.onchange = e => { 
+		var file = e.target.files[0]; 
+		var reader = new FileReader();
+		
+		reader.onload = readerEvent => {
+			var content = readerEvent.target.result; // This is an ArrayBuffer
+			// Send the file name and content back to Godot
+			window.godot_file_callback(file.name, new Uint8Array(content));
+		}
+		reader.readAsArrayBuffer(file);
+	}
+	input.click();
+	"""
+	var window = JavaScriptBridge.get_interface("window")
+	js_callback = JavaScriptBridge.create_callback(_on_file_loaded)
+
+	window.godot_file_callback = js_callback
+	
+	JavaScriptBridge.eval(js_code)
+
+
+func _on_file_loaded(args) -> void:
+	var file_name = args[0]
+	var js_array = args[1]
+	file_name_web = file_name
+	
+	file_data = PackedByteArray()
+	file_data.resize(js_array.length)
+	for i in range(js_array.length):
+		file_data[i] = js_array[i]
+		
+	if file_name_web.ends_with('.splat'):
+		read_bytes_as_splat(file_data)
+	elif file_name_web.ends_with('.json'):
+		read_bytes_as_cam(file_data)
+
+func read_bytes_as_cam(data: PackedByteArray) -> void:
+	var json_string = data.get_string_from_utf8()
+	var json = JSON.new()
+	var result = json.parse(json_string)
+	
+	if result != OK:
+		print("JSON Parse Error: ", json.get_error_message(), " at line ", json.get_error_line())
+		return
+	camera_mesh_instance.multimesh.instance_count = len(json.data)
+	
+	var i: int = 0
+	for key in json.data:
+		var cam_pos = key['position']
+		
+		var tx = Transform3D(Basis(), Vector3(cam_pos[0], cam_pos[1], cam_pos[2]))
+		camera_mesh_instance.multimesh.set_instance_transform(i, tx)
+		i+=1
 
 func _box_select() -> void:
 	crop_box.visible = true
@@ -77,7 +197,7 @@ func _sphere_select() -> void:
 
 func _process_selection() -> void:
 	var output = []
-	var exit_code = OS.execute("bash", ["-c", "./scripts/processing.sh"], output, true, true)
+	var exit_code = OS.execute("bash", ["-c", "./scripts/processing.sh"], output, true, false)
 	print(exit_code)
 	print(output)
 
@@ -161,7 +281,7 @@ func parse_splat(path: String) -> void:
 	if not file: return
 
 	is_binary = true
-	var max_points_to_load = file.get_length() / splat_size # Change to limit number of loaded splats
+	var max_points_to_load = file.get_length() / splat_size
 	vertex_count = max_points_to_load
 	
 	var multimesh: MultiMesh = splat_mesh_instance.multimesh
