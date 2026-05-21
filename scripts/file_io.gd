@@ -12,6 +12,8 @@ extends Control
 @onready var point_size_slider: HSlider = $"VBoxContainer/TopMenu/HSlider"
 @onready var number_label: Label = $"VBoxContainer/StatContainer/NumberLabel"
 
+@onready var process_button: Button = $"VBoxContainer/ToolContainer/AnalysisContainer/ProcessButton"
+
 # Struct to hold parsed metadata
 var vertex_count: int = 0
 var property_list: Array[String] = []
@@ -50,10 +52,17 @@ func _ready() -> void:
 	
 	save_button.pressed.connect(func(): save_file_dialog.popup_centered_ratio(0.7))
 	save_file_dialog.confirmed.connect(_save_file)
-	
+
+	process_button.pressed.connect(_process_selection)
+
 	# Connect slider to function
 	point_size_slider.value_changed.connect(_on_h_slider_value_changed)
 
+func _process_selection() -> void:
+	var output = []
+	var exit_code = OS.execute("bash", ["-c", "./scripts/processing.sh"], output, true, true)
+	print(exit_code)
+	print(output)
 
 func _on_h_slider_value_changed(value) -> void:
 	splat_mesh_instance.multimesh.mesh.radius = value

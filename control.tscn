@@ -132,7 +132,7 @@ mouse_target = true
 
 [node name="SubViewport" type="SubViewport" parent="VBoxContainer/SubViewportContainer" unique_id=620041459]
 handle_input_locally = false
-size = Vector2i(1280, 720)
+size = Vector2i(1280, 591)
 render_target_update_mode = 4
 
 [node name="SplatScene" type="Node3D" parent="VBoxContainer/SubViewportContainer/SubViewport" unique_id=862694077]
@@ -163,6 +163,28 @@ script = ExtResource("5_kbped")
 
 [node name="CameraMeshInstance" type="MultiMeshInstance3D" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=2062584244]
 multimesh = SubResource("MultiMesh_6a6wx")
+
+[node name="ToolContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=404010446]
+layout_mode = 2
+
+[node name="AnalysisContainer" type="HBoxContainer" parent="VBoxContainer/ToolContainer" unique_id=1543112142]
+layout_mode = 2
+
+[node name="ProcessButton" type="Button" parent="VBoxContainer/ToolContainer/AnalysisContainer" unique_id=130044820]
+layout_mode = 2
+text = "Process"
+
+[node name="Panel" type="Panel" parent="VBoxContainer/ToolContainer" unique_id=1286330606]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CropBoxButton" type="Button" parent="VBoxContainer/ToolContainer" unique_id=1216985827]
+layout_mode = 2
+text = "Crop Box"
+
+[node name="CropSphere" type="Button" parent="VBoxContainer/ToolContainer" unique_id=1984234570]
+layout_mode = 2
+text = "Crop Sphere"
 
 [node name="OpenFileDialog" type="FileDialog" parent="." unique_id=245247398]
 title = "Open a File"
