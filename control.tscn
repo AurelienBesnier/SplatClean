@@ -182,7 +182,7 @@ size_flags_horizontal = 3
 layout_mode = 2
 text = "Crop Box"
 
-[node name="CropSphere" type="Button" parent="VBoxContainer/ToolContainer" unique_id=1984234570]
+[node name="CropSphereButton" type="Button" parent="VBoxContainer/ToolContainer" unique_id=1984234570]
 layout_mode = 2
 text = "Crop Sphere"
 

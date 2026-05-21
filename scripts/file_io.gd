@@ -9,10 +9,13 @@ extends Control
 @onready var splat_mesh_instance: MultiMeshInstance3D = $VBoxContainer/SubViewportContainer/SubViewport/SplatScene/SplatMeshInstance
 @onready var camera_mesh_instance: MultiMeshInstance3D = $VBoxContainer/SubViewportContainer/SubViewport/SplatScene/CameraMeshInstance
 @onready var crop_box: MeshInstance3D = $VBoxContainer/SubViewportContainer/SubViewport/SplatScene/CropBox
+@onready var crop_sphere: MeshInstance3D = $VBoxContainer/SubViewportContainer/SubViewport/SplatScene/CropSphere
 @onready var point_size_slider: HSlider = $"VBoxContainer/TopMenu/HSlider"
 @onready var number_label: Label = $"VBoxContainer/StatContainer/NumberLabel"
 
 @onready var process_button: Button = $"VBoxContainer/ToolContainer/AnalysisContainer/ProcessButton"
+@onready var crop_box_button: Button = $"VBoxContainer/ToolContainer/CropBoxButton"
+@onready var crop_sphere_button: Button = $"VBoxContainer/ToolContainer/CropSphereButton"
 
 # Struct to hold parsed metadata
 var vertex_count: int = 0
@@ -53,10 +56,24 @@ func _ready() -> void:
 	save_button.pressed.connect(func(): save_file_dialog.popup_centered_ratio(0.7))
 	save_file_dialog.confirmed.connect(_save_file)
 
+	crop_box_button.pressed.connect(_box_select)
+	crop_sphere_button.pressed.connect(_sphere_select)
 	process_button.pressed.connect(_process_selection)
 
 	# Connect slider to function
 	point_size_slider.value_changed.connect(_on_h_slider_value_changed)
+
+func _box_select() -> void:
+	crop_box.visible = true
+	crop_sphere.visible = false
+	
+	crop_box.position = Vector3(0,0,0)
+
+func _sphere_select() -> void:
+	crop_box.visible = false
+	crop_sphere.visible = true
+	
+	crop_sphere.position = Vector3(0,0,0)
 
 func _process_selection() -> void:
 	var output = []
