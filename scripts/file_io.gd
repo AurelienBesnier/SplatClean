@@ -75,7 +75,7 @@ func handle_open_dialog(dialog):
 		
 func read_bytes_as_splat(data: PackedByteArray) -> void:
 	is_binary = true
-	var max_points_to_load = len(data) / splat_size
+	var max_points_to_load = int(float(len(data)) / splat_size) # to make godot happy
 	vertex_count = max_points_to_load
 	
 	var multimesh: MultiMesh = splat_mesh_instance.multimesh
@@ -281,7 +281,7 @@ func parse_splat(path: String) -> void:
 	if not file: return
 
 	is_binary = true
-	var max_points_to_load = file.get_length() / splat_size
+	var max_points_to_load = int(float(file.get_length()) / splat_size) # to make godot happy
 	vertex_count = max_points_to_load
 	
 	var multimesh: MultiMesh = splat_mesh_instance.multimesh
