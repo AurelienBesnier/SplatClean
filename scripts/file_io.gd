@@ -84,14 +84,13 @@ func read_bytes_as_splat(data: PackedByteArray) -> void:
 	print("got ", max_points_to_load, " to load")
 	print("Reading points and colors...")
 	var i = 0
-	print(max_points_to_load)
+	var instance_idx = 0
 	while i < len(data):
-		i += position_offset
 		var x = data.decode_float(i)
 		var y = data.decode_float(i+4)
 		var z = data.decode_float(i+8)
 		
-		i += scale_offset
+		i += 12 # advance 3 float
 		var scale_x = data.decode_float(i)
 		var scale_y = data.decode_float(i+4)
 		var scale_z = data.decode_float(i+8)
@@ -99,13 +98,13 @@ func read_bytes_as_splat(data: PackedByteArray) -> void:
 		scales.push_back(scale_y)
 		scales.push_back(scale_z)
 		
-		i += color_offset
+		i += 12 # advance 3 float
 		var r = data.decode_u8(i) / 255.0
 		var g = data.decode_u8(i+1) / 255.0
 		var b = data.decode_u8(i+2) / 255.0
 		var a = data.decode_u8(i+3) / 255.0
 		
-		i += rotation_offset
+		i += 4 # advance 4 bytes
 		var rot_x = data.decode_u8(i)
 		var rot_y = data.decode_u8(i+1)
 		var rot_z = data.decode_u8(i+2)
@@ -114,13 +113,13 @@ func read_bytes_as_splat(data: PackedByteArray) -> void:
 		rotations.push_back(rot_y)
 		rotations.push_back(rot_z)
 		rotations.push_back(rot_t)
+		i += 4 # adding the last 4 byte offset
 		
 		var tx = Transform3D(Basis(), Vector3(x, y, z))
-		multimesh.set_instance_transform(i, tx)
-		multimesh.set_instance_color(i, Color(r, g, b, a))
-		
-		i+=splat_size
-
+		multimesh.set_instance_transform(instance_idx, tx)
+		multimesh.set_instance_color(instance_idx, Color(r, g, b, a))
+		instance_idx += 1
+	print("Done !")
 	
 func trigger_web_upload():
 	# JavaScript to inject a hidden file input and trigger it
