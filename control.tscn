@@ -189,17 +189,15 @@ text = "Crop Sphere"
 [node name="OpenFileDialog" type="FileDialog" parent="." unique_id=245247398]
 title = "Open a File"
 file_mode = 0
+access = 2
 filters = PackedStringArray("*.splat, *.ply; Gaussian Splatting Files")
-use_native_dialog = true
 
 [node name="OpenCameraDialog" type="FileDialog" parent="." unique_id=1198926968]
 title = "Open a File"
 file_mode = 0
 access = 2
 filters = PackedStringArray("*.json; Camera position file")
-use_native_dialog = true
 
 [node name="SaveFileDialog" type="FileDialog" parent="." unique_id=1372098284]
 access = 2
 filters = PackedStringArray("*.splat, *.ply; Gaussian Splatting Files")
-use_native_dialog = true

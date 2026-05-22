@@ -40,9 +40,11 @@ const splat_size = 32
 var scales: Array[float] = []
 var rotations: Array[int] = []
 
+var camera_file_path: String
+
 var file_data: PackedByteArray # For web version
 var file_name_web: String # For web version
-var js_callback: JavaScriptObject
+var js_callback: JavaScriptObject # For web version
 
 # Spherical Harmonics constant used to normalize base color
 const SH_C0: float = 0.28209479177387814
@@ -195,8 +197,45 @@ func _sphere_select() -> void:
 	crop_sphere.position = Vector3(0,0,0)
 
 func _process_selection() -> void:
+	# Prepare data in temporary directory (eg. /tmp)
+	# TODO: make it mutliplatform
+	var tmp_file_path = '/tmp/splat_clean_tmp.splat'
+	var splat_tmp = FileAccess.open(tmp_file_path, FileAccess.WRITE)
+	if not splat_tmp: 
+		print("Failed to create file: ", tmp_file_path)
+		return
+
+	# TODO: make a generic saving to file
+	for i in range(vertex_count):		
+		var col = splat_mesh_instance.multimesh.get_instance_color(i)
+		if col.a8 > 3 :
+			var pos = splat_mesh_instance.multimesh.get_instance_transform(i).origin
+			# Position
+			splat_tmp.store_float(pos.x)
+			splat_tmp.store_float(pos.y)
+			splat_tmp.store_float(pos.z)
+			
+			# Scale
+			splat_tmp.store_float(scales[i*3+0])
+			splat_tmp.store_float(scales[i*3+1])
+			splat_tmp.store_float(scales[i*3+2])
+			
+			# Color
+			splat_tmp.store_8(col.r8)
+			splat_tmp.store_8(col.g8)
+			splat_tmp.store_8(col.b8)
+			splat_tmp.store_8(col.a8)
+			
+			# Rotation
+			splat_tmp.store_8(rotations[i*4+0])
+			splat_tmp.store_8(rotations[i*4+1])
+			splat_tmp.store_8(rotations[i*4+2])
+			splat_tmp.store_8(rotations[i*4+3])
+
+	splat_tmp.close()
+
 	var output = []
-	var exit_code = OS.execute("bash", ["-c", "./scripts/processing.sh"], output, true, false)
+	var exit_code = OS.execute("bash", ["-c", "./scripts/processing.sh", tmp_file_path, camera_file_path], output, true, false)
 	print(exit_code)
 	print(output)
 
@@ -209,6 +248,7 @@ func _on_h_slider_value_changed(value) -> void:
 
 func _camera_selected(path: String) -> void:
 	print("Selected camera file: ", path)
+	camera_file_path = path
 	# Get contents
 	var file = FileAccess.open(path, FileAccess.READ)
 	var json_string = file.get_as_text()

@@ -1,6 +1,11 @@
 echo "this is in the bash script: $HOME"
-eval "$(mamba shell hook --shell bash)"
 
+# initialize mamba for the script
+eval "$(mamba shell hook --shell bash)"
 mamba activate splat
 
-cwltool -h
+# TODO: make a conda fallback if needed
+
+
+
+filtering -s $1 -c $2
