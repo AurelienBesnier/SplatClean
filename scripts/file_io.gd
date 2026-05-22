@@ -235,7 +235,7 @@ func _process_selection() -> void:
 	splat_tmp.close()
 
 	var output = []
-	var exit_code = OS.execute("bash", ["-c", "./scripts/processing.sh", tmp_file_path, camera_file_path], output, true, false)
+	var exit_code = OS.execute("bash", ["./scripts/processing.sh", tmp_file_path, camera_file_path], output, true, false)
 	print(exit_code)
 	print(output)
 
