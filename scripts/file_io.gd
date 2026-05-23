@@ -204,35 +204,8 @@ func _process_selection() -> void:
 	if not splat_tmp: 
 		print("Failed to create file: ", tmp_file_path)
 		return
-
-	# TODO: make a generic saving to file
-	for i in range(vertex_count):		
-		var col = splat_mesh_instance.multimesh.get_instance_color(i)
-		if col.a8 > 3 :
-			var pos = splat_mesh_instance.multimesh.get_instance_transform(i).origin
-			# Position
-			splat_tmp.store_float(pos.x)
-			splat_tmp.store_float(pos.y)
-			splat_tmp.store_float(pos.z)
-			
-			# Scale
-			splat_tmp.store_float(scales[i*3+0])
-			splat_tmp.store_float(scales[i*3+1])
-			splat_tmp.store_float(scales[i*3+2])
-			
-			# Color
-			splat_tmp.store_8(col.r8)
-			splat_tmp.store_8(col.g8)
-			splat_tmp.store_8(col.b8)
-			splat_tmp.store_8(col.a8)
-			
-			# Rotation
-			splat_tmp.store_8(rotations[i*4+0])
-			splat_tmp.store_8(rotations[i*4+1])
-			splat_tmp.store_8(rotations[i*4+2])
-			splat_tmp.store_8(rotations[i*4+3])
-
-	splat_tmp.close()
+		
+	save_splat_to_file(splat_tmp)
 
 	var output = []
 	var exit_code = OS.execute("bash", ["./scripts/processing.sh", tmp_file_path, camera_file_path], output, true, false)
@@ -278,15 +251,7 @@ func _on_file_selected(path: String) -> void:
 	
 	number_label.text = "Number of Gaussians: " + str(vertex_count)
 	
-func _save_file() -> void:
-	print("saving file")
-	var save_path = save_file_dialog.current_path
-
-	var file = FileAccess.open(save_path, FileAccess.WRITE)
-	if not file: 
-		print("Failed to create file: ", save_path)
-		return
-
+func save_splat_to_file(file):
 	for i in range(vertex_count):		
 		var col = splat_mesh_instance.multimesh.get_instance_color(i)
 		if col.a8 > 3 :
@@ -314,6 +279,17 @@ func _save_file() -> void:
 			file.store_8(rotations[i*4+3])
 
 	file.close()
+	
+func _save_file() -> void:
+	print("saving file")
+	var save_path = save_file_dialog.current_path
+
+	var file = FileAccess.open(save_path, FileAccess.WRITE)
+	if not file: 
+		print("Failed to create file: ", save_path)
+		return
+
+	save_splat_to_file(file)
 
 func parse_splat(path: String) -> void:
 	var file = FileAccess.open(path, FileAccess.READ)
