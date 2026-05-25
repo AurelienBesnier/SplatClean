@@ -1,10 +1,11 @@
 [gd_scene format=3 uid="uid://drxlsccwjqlb0"]
 
-[ext_resource type="Script" uid="uid://banhwokdrg8ni" path="res://scripts/file_io.gd" id="1_0fbet"]
-[ext_resource type="Script" uid="uid://demefs1tns4yw" path="res://addons/goutte.camera.trackball/trackball_camera.gd" id="2_62e2m"]
-[ext_resource type="Shader" uid="uid://dbwyve1c5c45c" path="res://shaders/wireframe.gdshader" id="3_ee4bf"]
-[ext_resource type="Script" uid="uid://dfq4qgslo7un1" path="res://scripts/crop_box.gd" id="3_qtu10"]
-[ext_resource type="Script" uid="uid://cc2cnlquek3de" path="res://scripts/crop_sphere.gd" id="5_kbped"]
+[ext_resource type="Script" uid="uid://banhwokdrg8ni" path="res://scripts/file_io.gd" id="1_tjwpk"]
+[ext_resource type="Script" uid="uid://demefs1tns4yw" path="res://addons/goutte.camera.trackball/trackball_camera.gd" id="2_lpubu"]
+[ext_resource type="Shader" uid="uid://dbwyve1c5c45c" path="res://shaders/wireframe.gdshader" id="3_lt2xq"]
+[ext_resource type="Script" uid="uid://dfq4qgslo7un1" path="res://scripts/crop_box.gd" id="4_1p5nq"]
+[ext_resource type="Script" uid="uid://cc2cnlquek3de" path="res://scripts/crop_sphere.gd" id="5_hob4j"]
+[ext_resource type="PackedScene" uid="uid://bs4lix403hem8" path="res://scenes/RotationHandler.tscn" id="6_lpubu"]
 
 [sub_resource type="Sky" id="Sky_ee4bf"]
 
@@ -12,31 +13,9 @@
 background_mode = 3
 sky = SubResource("Sky_ee4bf")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qtu10"]
-transparency = 1
-shading_mode = 0
-disable_ambient_light = true
-disable_fog = true
-disable_specular_occlusion = true
-vertex_color_use_as_albedo = true
-disable_receive_shadows = true
-billboard_mode = 1
-
-[sub_resource type="SphereMesh" id="SphereMesh_ee4bf"]
-material = SubResource("StandardMaterial3D_qtu10")
-radius = 0.005
-height = 0.01
-radial_segments = 4
-rings = 2
-
-[sub_resource type="MultiMesh" id="MultiMesh_0fbet"]
-transform_format = 1
-use_colors = true
-mesh = SubResource("SphereMesh_ee4bf")
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ee4bf"]
 render_priority = 1
-shader = ExtResource("3_ee4bf")
+shader = ExtResource("3_lt2xq")
 shader_parameter/wire_color = Color(0, 1, 0, 1)
 shader_parameter/base_color = Color(0, 0, 0, 0.05882353)
 shader_parameter/wire_width = 2.0000000475
@@ -46,7 +25,7 @@ material = SubResource("ShaderMaterial_ee4bf")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kbped"]
 render_priority = 0
-shader = ExtResource("3_ee4bf")
+shader = ExtResource("3_lt2xq")
 shader_parameter/wire_color = Color(0, 1, 0, 1)
 shader_parameter/base_color = Color(0, 0, 0, 0.1)
 shader_parameter/wire_width = 1.0
@@ -75,10 +54,32 @@ rings = 10
 transform_format = 1
 mesh = SubResource("SphereMesh_iy58a")
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qtu10"]
+transparency = 1
+shading_mode = 0
+disable_ambient_light = true
+disable_fog = true
+disable_specular_occlusion = true
+vertex_color_use_as_albedo = true
+disable_receive_shadows = true
+billboard_mode = 1
+
+[sub_resource type="SphereMesh" id="SphereMesh_ee4bf"]
+material = SubResource("StandardMaterial3D_qtu10")
+radius = 0.005
+height = 0.01
+radial_segments = 4
+rings = 2
+
+[sub_resource type="MultiMesh" id="MultiMesh_0fbet"]
+transform_format = 1
+use_colors = true
+mesh = SubResource("SphereMesh_ee4bf")
+
 [node name="Control" type="Control" unique_id=1717159827]
 layout_mode = 3
 anchors_preset = 0
-script = ExtResource("1_0fbet")
+script = ExtResource("1_tjwpk")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1435058029]
 layout_mode = 0
@@ -140,7 +141,7 @@ render_target_update_mode = 4
 [node name="Camera3D" type="Camera3D" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=1169085170]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
 current = true
-script = ExtResource("2_62e2m")
+script = ExtResource("2_lpubu")
 zoom_strength = 0.7
 zoom_minimum = 0.001
 inertia_strength = 0.4
@@ -149,20 +150,22 @@ metadata/_custom_type_script = "uid://demefs1tns4yw"
 [node name="WorldEnvironment" type="WorldEnvironment" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=713593165]
 environment = SubResource("Environment_kbped")
 
-[node name="SplatMeshInstance" type="MultiMeshInstance3D" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=2086659988]
-multimesh = SubResource("MultiMesh_0fbet")
-
 [node name="CropBox" type="MeshInstance3D" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=377722972]
 visible = false
 mesh = SubResource("BoxMesh_qtu10")
-script = ExtResource("3_qtu10")
+script = ExtResource("4_1p5nq")
 
 [node name="CropSphere" type="MeshInstance3D" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=2051718283]
 mesh = SubResource("SphereMesh_fj5cn")
-script = ExtResource("5_kbped")
+script = ExtResource("5_hob4j")
 
 [node name="CameraMeshInstance" type="MultiMeshInstance3D" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=2062584244]
 multimesh = SubResource("MultiMesh_6a6wx")
+
+[node name="SplatMeshInstance" type="MultiMeshInstance3D" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=2086659988]
+multimesh = SubResource("MultiMesh_0fbet")
+
+[node name="RotationHandler" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene/SplatMeshInstance" unique_id=143149576 instance=ExtResource("6_lpubu")]
 
 [node name="ToolContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=404010446]
 layout_mode = 2

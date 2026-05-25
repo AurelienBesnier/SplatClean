@@ -1,0 +1,73 @@
+[gd_scene format=3 uid="uid://bs4lix403hem8"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j8yrw"]
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="TorusMesh" id="TorusMesh_i44pv"]
+material = SubResource("StandardMaterial3D_j8yrw")
+outer_radius = 0.55
+rings = 16
+ring_segments = 16
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_i44pv"]
+size = Vector3(0.06524658, 1.0776978, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i44pv"]
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_color = Color(0, 1, 0, 1)
+
+[sub_resource type="TorusMesh" id="TorusMesh_usuih"]
+material = SubResource("StandardMaterial3D_i44pv")
+outer_radius = 0.55
+rings = 16
+ring_segments = 16
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_j8yrw"]
+size = Vector3(1.0385742, 1.0761719, 0.09741211)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_usuih"]
+shading_mode = 0
+albedo_color = Color(0, 0, 1, 1)
+
+[sub_resource type="TorusMesh" id="TorusMesh_556ep"]
+material = SubResource("StandardMaterial3D_usuih")
+outer_radius = 0.55
+rings = 16
+ring_segments = 16
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_usuih"]
+size = Vector3(1.0765991, 0.075683594, 1)
+
+[node name="RotationHandler" type="Node3D" unique_id=143149576]
+
+[node name="X_Ring" type="Area3D" parent="." unique_id=1751377999]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="X_Ring" unique_id=64753005]
+transform = Transform3D(-4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("TorusMesh_i44pv")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="X_Ring" unique_id=1993868954]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00045776367, 0.0042419434, 0)
+shape = SubResource("BoxShape3D_i44pv")
+
+[node name="Y_Ring" type="Area3D" parent="." unique_id=1788337317]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Y_Ring" unique_id=1125017452]
+mesh = SubResource("TorusMesh_usuih")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Y_Ring" unique_id=151440353]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.01928711, 0.0009765625, -0.0025634766)
+shape = SubResource("BoxShape3D_j8yrw")
+
+[node name="Z_Ring" type="Area3D" parent="." unique_id=633520436]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Z_Ring" unique_id=68287318]
+transform = Transform3D(1, 0, 0, 0, -0.0023038804, 0.9999973, 0, -0.9999973, -0.0023038804, 0, 0, 0)
+mesh = SubResource("TorusMesh_556ep")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Z_Ring" unique_id=1059737117]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0022888184, -0.0053710938, 0)
+shape = SubResource("BoxShape3D_usuih")
