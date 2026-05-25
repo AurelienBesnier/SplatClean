@@ -142,7 +142,7 @@ render_target_update_mode = 4
 [node name="WorldBasis" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=350839907 instance=ExtResource("2_lt2xq")]
 
 [node name="Camera3D" type="Camera3D" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=1169085170]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
+transform = Transform3D(-0.99999994, 0, 8.742277e-08, 0, 1, 0, -8.742277e-08, 0, -0.99999994, 0, 0, -5)
 current = true
 script = ExtResource("2_lpubu")
 zoom_strength = 0.7
