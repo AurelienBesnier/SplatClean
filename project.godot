@@ -15,6 +15,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="SplatClean"
+config/description="Simple tool to clean up Gaussian Splatting acquisitions."
 run/main_scene="uid://drxlsccwjqlb0"
 config/features=PackedStringArray("4.6", "Forward Plus")
 run/max_fps=60
