@@ -17,12 +17,17 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 config/name="SplatClean"
 run/main_scene="uid://drxlsccwjqlb0"
 config/features=PackedStringArray("4.6", "Forward Plus")
+run/max_fps=60
 config/icon="res://icon.svg"
 
 [display]
 
-window/size/viewport_width=1280
-window/size/viewport_height=720
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/size/mode=2
+window/stretch/mode="viewport"
+window/stretch/aspect="expand"
+window/vsync/vsync_mode=0
 
 [dotnet]
 
@@ -30,7 +35,7 @@ project/assembly_name="SplatClean"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/Gizmo3DScript/plugin.cfg", "res://addons/goutte.camera.trackball/plugin.cfg")
+enabled=PackedStringArray("res://addons/goutte.camera.trackball/plugin.cfg")
 
 [input]
 
@@ -117,4 +122,5 @@ cam_barrel_roll={
 [rendering]
 
 rendering_device/driver.windows="d3d12"
-renderer/rendering_method="mobile"
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"

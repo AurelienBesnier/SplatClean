@@ -1,12 +1,10 @@
-echo "this is in the bash script: $HOME"
-
 {
-    conda activate splat
+	conda activate splat
 } || {
 
-    # initialize mamba for the script
-    eval "$(mamba shell hook --shell bash)"
-    mamba activate splat
+	# initialize mamba for the script
+	eval "$(mamba shell hook --shell bash)"
+	mamba activate splat
 }
 
 
