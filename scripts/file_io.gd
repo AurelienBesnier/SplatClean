@@ -208,8 +208,12 @@ func _process_selection() -> void:
 	save_splat_to_file(splat_tmp)
 
 	var output = []
-	var exit_code = OS.execute("bash", ["./scripts/processing.sh", tmp_file_path, camera_file_path], output, true, false)
-	print(exit_code)
+	var platform = OS.get_name()
+	if platform == "Windows":
+		# TODO: make a powershell version
+		print("Cannot run bash scripts on windows")
+	else:
+		var exit_code = OS.execute("bash", ["./scripts/processing.sh", tmp_file_path, camera_file_path], output, true, false)
 	print(output)
 
 func _on_h_slider_value_changed(value) -> void:
