@@ -59,7 +59,7 @@ func _ready() -> void:
 	camera_button.pressed.connect(func(): handle_open_dialog(open_camera_dialog))
 	open_camera_dialog.file_selected.connect(_camera_selected)
 	
-	save_button.pressed.connect(func(): save_file_dialog.popup_centered_ratio(0.7))
+	save_button.pressed.connect(func(): handle_save_dialog(save_file_dialog))
 	save_file_dialog.confirmed.connect(_save_file)
 
 	crop_box_button.pressed.connect(_box_select)
@@ -74,6 +74,16 @@ func handle_open_dialog(dialog):
 		trigger_web_upload() # Custom JS implementation
 	else:
 		dialog.popup_centered_ratio(0.7)
+		
+func handle_save_dialog(dialog):
+	if OS.has_feature("web"):
+		trigger_web_download() # Custom JS implementation
+	else:
+		dialog.popup_centered_ratio(0.7)
+
+func trigger_web_download():
+	# TODO: download result
+	pass
 		
 func read_bytes_as_splat(data: PackedByteArray) -> void:
 	is_binary = true
