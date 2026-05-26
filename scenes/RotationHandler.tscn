@@ -1,5 +1,7 @@
 [gd_scene format=3 uid="uid://bs4lix403hem8"]
 
+[ext_resource type="Script" uid="uid://cxe3u1i7vag6u" path="res://scripts/rotation_handler.gd" id="1_igrgg"]
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j8yrw"]
 shading_mode = 0
 vertex_color_use_as_albedo = true
@@ -42,6 +44,7 @@ ring_segments = 16
 size = Vector3(1.0765991, 0.075683594, 1)
 
 [node name="RotationHandler" type="Node3D" unique_id=143149576]
+script = ExtResource("1_igrgg")
 
 [node name="X_Ring" type="Area3D" parent="." unique_id=1751377999]
 

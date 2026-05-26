@@ -259,8 +259,8 @@ func _on_h_slider_value_changed(value) -> void:
 	splat_mesh_instance.multimesh.mesh.radius = value
 	splat_mesh_instance.multimesh.mesh.height = value * 2
 	
-	camera_mesh_instance.multimesh.mesh.radius = value
-	camera_mesh_instance.multimesh.mesh.height = value * 2
+	camera_mesh_instance.multimesh.mesh.radius = value * 2
+	camera_mesh_instance.multimesh.mesh.height = value * 4
 
 func _camera_selected(path: String) -> void:
 	print("Selected camera file: ", path)

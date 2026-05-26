@@ -23,9 +23,8 @@ config/icon="res://icon.svg"
 
 [display]
 
-window/size/viewport_width=1920
-window/size/viewport_height=1080
-window/size/mode=2
+window/size/viewport_width=1280
+window/size/viewport_height=720
 window/stretch/mode="viewport"
 window/stretch/aspect="expand"
 window/vsync/vsync_mode=0
@@ -36,7 +35,7 @@ project/assembly_name="SplatClean"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/goutte.camera.trackball/plugin.cfg")
+enabled=PackedStringArray("res://addons/Gizmo3DScript/plugin.cfg", "res://addons/goutte.camera.trackball/plugin.cfg")
 
 [input]
 

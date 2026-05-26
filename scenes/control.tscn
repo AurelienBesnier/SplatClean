@@ -6,7 +6,7 @@
 [ext_resource type="Shader" uid="uid://dbwyve1c5c45c" path="res://shaders/wireframe.gdshader" id="3_lt2xq"]
 [ext_resource type="Script" uid="uid://dfq4qgslo7un1" path="res://scripts/crop_box.gd" id="4_1p5nq"]
 [ext_resource type="Script" uid="uid://cc2cnlquek3de" path="res://scripts/crop_sphere.gd" id="5_hob4j"]
-[ext_resource type="PackedScene" uid="uid://bs4lix403hem8" path="res://scenes/RotationHandler.tscn" id="6_lpubu"]
+[ext_resource type="Script" uid="uid://e3f1ox6y6cvg" path="res://addons/Gizmo3DScript/gizmo3D.gd" id="8_1p5nq"]
 
 [sub_resource type="Sky" id="Sky_ee4bf"]
 
@@ -148,6 +148,10 @@ render_target_update_mode = 4
 
 [node name="SplatScene" type="Node3D" parent="VBoxContainer/SubViewportContainer/SubViewport" unique_id=862694077]
 
+[node name="Gizmo3D" type="Node3D" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=805975491]
+script = ExtResource("8_1p5nq")
+metadata/_custom_type_script = "uid://e3f1ox6y6cvg"
+
 [node name="WorldBasis" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=350839907 instance=ExtResource("2_lt2xq")]
 
 [node name="Camera3D" type="Camera3D" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=1169085170]
@@ -176,8 +180,6 @@ multimesh = SubResource("MultiMesh_6a6wx")
 
 [node name="SplatMeshInstance" type="MultiMeshInstance3D" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=2086659988]
 multimesh = SubResource("MultiMesh_0fbet")
-
-[node name="RotationHandler" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene/SplatMeshInstance" unique_id=143149576 instance=ExtResource("6_lpubu")]
 
 [node name="ToolContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=404010446]
 layout_mode = 2
