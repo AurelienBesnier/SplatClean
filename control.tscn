@@ -116,6 +116,15 @@ max_value = 0.1
 step = 0.001
 value = 0.001
 
+[node name="ScaleLabel" type="Label" parent="VBoxContainer/TopMenu" unique_id=222694210]
+layout_mode = 2
+text = "Scale: "
+
+[node name="ScaleSpinBox" type="SpinBox" parent="VBoxContainer/TopMenu" unique_id=1190923750]
+layout_mode = 2
+min_value = -100.0
+value = 1.0
+
 [node name="StatContainer" type="VBoxContainer" parent="VBoxContainer" unique_id=974785991]
 layout_mode = 2
 

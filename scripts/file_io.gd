@@ -12,10 +12,12 @@ extends Control
 @onready var crop_sphere: MeshInstance3D = $VBoxContainer/SubViewportContainer/SubViewport/SplatScene/CropSphere
 @onready var point_size_slider: HSlider = $"VBoxContainer/TopMenu/HSlider"
 @onready var number_label: Label = $"VBoxContainer/StatContainer/NumberLabel"
+@onready var scale_spin_box: SpinBox = $"VBoxContainer/TopMenu/ScaleSpinBox"
 
 @onready var process_button: Button = $"VBoxContainer/ToolContainer/AnalysisContainer/ProcessButton"
 @onready var crop_box_button: Button = $"VBoxContainer/ToolContainer/CropBoxButton"
 @onready var crop_sphere_button: Button = $"VBoxContainer/ToolContainer/CropSphereButton"
+
 
 # Struct to hold parsed metadata
 var vertex_count: int = 0
@@ -68,6 +70,11 @@ func _ready() -> void:
 
 	# Connect slider to function
 	point_size_slider.value_changed.connect(_on_h_slider_value_changed)
+	
+	scale_spin_box.value_changed.connect(_on_scale_changed)
+	
+func _on_scale_changed(value):
+	splat_mesh_instance.scale = Vector3(value,value,value)
 
 func handle_open_dialog(dialog):
 	if OS.has_feature("web"):
