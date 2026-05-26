@@ -83,7 +83,29 @@ func handle_save_dialog(dialog):
 
 func trigger_web_download():
 	# TODO: download result
-	pass
+	var content = PackedByteArray() # fill array
+	var file_name = ""
+	
+	var js_code = """
+	(function(filename, text) {
+		let blob = new Blob([text], {type: 'text/plain'}); // content of the file
+		let element = document.createElement('a');
+		element.setAttribute('href', URL.createObjectURL(blob));
+		element.setAttribute('download', filename);
+		
+		element.style.display = 'none';
+		document.body.appendChild(element);
+		
+		element.click();
+		
+		document.body.removeChild(element);
+		})
+	"""
+	JavaScriptBridge.eval(js_code)
+	
+	# Fetch the anonymous function
+	var window = JavaScriptBridge.get_interface("window")
+	js_code.call(file_name, content)
 		
 func read_bytes_as_splat(data: PackedByteArray) -> void:
 	is_binary = true
