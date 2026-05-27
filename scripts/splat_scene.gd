@@ -30,7 +30,6 @@ func _input(event: InputEvent) -> void:
 		var params = PhysicsRayQueryParameters3D.new()
 		params.from = from
 		params.to = from + dir * 1000.0
-		params.collide_with_areas = true
 		var result = get_world_3d().direct_space_state.intersect_ray(params)
 		if result.size() == 0:
 			return
