@@ -13,6 +13,7 @@ extends MeshInstance3D
 @export var reset := &"reset"
 
 @onready var splat_mesh_instance: MultiMeshInstance3D = $"../../Objects/Splat/SplatMeshInstance"
+@onready var gizmo: Gizmo3D = $"../../Gizmo3D"
 @onready var selected_label : Label = $"../../../../../StatContainer/SelectedLabel"
 
 const SCALE_INCREMENT = 0.05
@@ -55,19 +56,19 @@ func process_actions(_delta: float):
 		select_points()
 	if Input.is_action_just_pressed(cull):
 		cull_points()
-	if Input.is_action_just_pressed(reset):
+	if Input.is_action_just_pressed(reset): 
 		reset_selection()
 		
 func select_points() -> void:
 	var aabb = self.get_aabb()
-	
 	var number_selected = 0
 	
 	for i in range(splat_mesh_instance.multimesh.instance_count):
-		var global_pos = to_local(splat_mesh_instance.multimesh.get_instance_transform(i).origin)
+		var instance_transform = splat_mesh_instance.multimesh.get_instance_transform(i)
+		var world_transform = splat_mesh_instance.global_transform * instance_transform # order matters
 		var color = splat_mesh_instance.multimesh.get_instance_color(i)
 
-		if not aabb.has_point(global_pos):
+		if not aabb.has_point(world_transform.origin):
 			color.a8 = 3
 			splat_mesh_instance.multimesh.set_instance_color(i, color)
 		else:

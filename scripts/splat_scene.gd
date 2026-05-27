@@ -35,7 +35,6 @@ func _input(event: InputEvent) -> void:
 			return
 		# If shift is held, add/remove the node to/from the target list. Otherwise set the target to just that node.
 		var collider = result["collider"] as Node3D
-		print(collider)
 		var node = collider.get_parent()
 		if !_add:
 			gizmo.clear_selection()
