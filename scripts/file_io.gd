@@ -111,7 +111,7 @@ func trigger_web_download():
 	JavaScriptBridge.eval(js_code)
 	
 	# Fetch the anonymous function
-	var window = JavaScriptBridge.get_interface("window")
+	var _window = JavaScriptBridge.get_interface("window")
 	js_code.call(file_name, content)
 		
 func read_bytes_as_splat(data: PackedByteArray) -> void:
@@ -253,6 +253,7 @@ func _process_selection() -> void:
 		print("Cannot run bash scripts on windows")
 	else:
 		var exit_code = OS.execute("bash", ["./scripts/processing.sh", tmp_file_path, camera_file_path], output, true, false)
+		print(exit_code)
 	print(output)
 
 func _on_h_slider_value_changed(value) -> void:

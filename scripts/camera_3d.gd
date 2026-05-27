@@ -12,7 +12,7 @@ func _process(delta: float) -> void:
 	super._process(delta)
 
 
-func process_mouse(delta: float):
+func process_mouse(_delta: float):
 	if Input.is_action_pressed(middle_mouse):
 		if self.mouse_enabled and _mouseDragPosition != ABSURD_VECTOR2:
 			var _currentDragPosition := get_mouse_position()

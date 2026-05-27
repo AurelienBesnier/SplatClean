@@ -4,7 +4,7 @@ extends Node3D
 var gizmo : Gizmo3D
 var _add : bool
 
-func _process(delta):
+func _process(_delta):
 	_add = Input.is_action_pressed("add_target")
 
 func _input(event: InputEvent) -> void:
