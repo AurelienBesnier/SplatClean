@@ -8,8 +8,6 @@ func _process(delta):
 	_add = Input.is_action_pressed("add_target")
 
 func _input(event: InputEvent) -> void:
-	
-	gizmo = Gizmo3D.new()
 	# Toggle modes
 	if event.is_action_pressed("move_mode"):
 		gizmo.mode ^= Gizmo3D.ToolMode.MOVE
@@ -32,13 +30,13 @@ func _input(event: InputEvent) -> void:
 		var params = PhysicsRayQueryParameters3D.new()
 		params.from = from
 		params.to = from + dir * 1000.0
-		print(params.from)
+		params.collide_with_areas = true
 		var result = get_world_3d().direct_space_state.intersect_ray(params)
-		print(result)
 		if result.size() == 0:
 			return
 		# If shift is held, add/remove the node to/from the target list. Otherwise set the target to just that node.
 		var collider = result["collider"] as Node3D
+		print(collider)
 		var node = collider.get_parent()
 		if !_add:
 			gizmo.clear_selection()
