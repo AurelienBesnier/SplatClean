@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://drxlsccwjqlb0"]
 
 [ext_resource type="Script" uid="uid://banhwokdrg8ni" path="res://scripts/file_io.gd" id="1_tjwpk"]
+[ext_resource type="Script" uid="uid://big6sh5ko2dbm" path="res://scripts/splat_scene.gd" id="2_1p5nq"]
 [ext_resource type="Script" uid="uid://demefs1tns4yw" path="res://addons/goutte.camera.trackball/trackball_camera.gd" id="2_lpubu"]
 [ext_resource type="PackedScene" uid="uid://cwycqeck0i5r7" path="res://scenes/WorldBasis.tscn" id="2_lt2xq"]
 [ext_resource type="Shader" uid="uid://dbwyve1c5c45c" path="res://shaders/wireframe.gdshader" id="3_lt2xq"]
@@ -147,6 +148,7 @@ size = Vector2i(1280, 591)
 render_target_update_mode = 4
 
 [node name="SplatScene" type="Node3D" parent="VBoxContainer/SubViewportContainer/SubViewport" unique_id=862694077]
+script = ExtResource("2_1p5nq")
 
 [node name="Gizmo3D" type="Node3D" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=805975491]
 script = ExtResource("8_1p5nq")
@@ -167,11 +169,11 @@ metadata/_custom_type_script = "uid://demefs1tns4yw"
 environment = SubResource("Environment_kbped")
 
 [node name="CropBox" type="MeshInstance3D" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=377722972]
-visible = false
 mesh = SubResource("BoxMesh_qtu10")
 script = ExtResource("4_1p5nq")
 
 [node name="CropSphere" type="MeshInstance3D" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=2051718283]
+visible = false
 mesh = SubResource("SphereMesh_fj5cn")
 script = ExtResource("5_hob4j")
 

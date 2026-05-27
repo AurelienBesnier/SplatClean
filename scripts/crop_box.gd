@@ -39,9 +39,9 @@ func process_actions(_delta: float):
 
 	# Movement
 	if Input.is_action_pressed(move_x):
-		translate_object_local(Vector3(MOVE_INCREMENT, 0, 0))
-	if Input.is_action_pressed(move_minus_x):
 		translate_object_local(Vector3(-MOVE_INCREMENT, 0, 0))
+	if Input.is_action_pressed(move_minus_x):
+		translate_object_local(Vector3(MOVE_INCREMENT, 0, 0))
 	if Input.is_action_pressed(move_y):
 		translate_object_local(Vector3(0, MOVE_INCREMENT, 0))
 	if Input.is_action_pressed(move_minus_y):
