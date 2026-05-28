@@ -6,10 +6,13 @@ extends Control
 @onready var open_button: Button = $"VBoxContainer/TopMenu/OpenButton"
 @onready var camera_button: Button = $"VBoxContainer/TopMenu/CameraButton"
 @onready var save_button: Button = $"VBoxContainer/TopMenu/SaveButton"
+@onready var render_mode: OptionButton = $"VBoxContainer/ToolContainer/RenderOptions"
+
 @onready var splat_mesh_instance: MultiMeshInstance3D = $VBoxContainer/SubViewportContainer/SubViewport/SplatScene/Objects/Splat/SplatMeshInstance
 @onready var camera_mesh_instance: MultiMeshInstance3D = $VBoxContainer/SubViewportContainer/SubViewport/SplatScene/Objects/CameraMeshInstance
 @onready var crop_box: MeshInstance3D = $VBoxContainer/SubViewportContainer/SubViewport/SplatScene/CropBox/CropBox
 @onready var crop_sphere: MeshInstance3D = $VBoxContainer/SubViewportContainer/SubViewport/SplatScene/CropSphere
+
 @onready var point_size_slider: HSlider = $"VBoxContainer/TopMenu/HSlider"
 @onready var number_label: Label = $"VBoxContainer/StatContainer/NumberLabel"
 @onready var scale_spin_box: SpinBox = $"VBoxContainer/TopMenu/ScaleSpinBox"
@@ -52,26 +55,29 @@ var js_callback: JavaScriptObject # For web version
 const SH_C0: float = 0.28209479177387814
 
 func _ready() -> void:
-	# Connect the button to open the file dialog
+	#### File Dialogs
 	open_button.pressed.connect(func(): handle_open_dialog(open_file_dialog))
-	# Connect the file dialog selection event
 	open_file_dialog.file_selected.connect(_on_file_selected)
 	
-	# Same with other buttons
 	camera_button.pressed.connect(func(): handle_open_dialog(open_camera_dialog))
 	open_camera_dialog.file_selected.connect(_camera_selected)
 	
 	save_button.pressed.connect(func(): handle_save_dialog(save_file_dialog))
 	save_file_dialog.confirmed.connect(_save_file)
-
+	
+	#### Buttons
 	crop_box_button.pressed.connect(_box_select)
 	crop_sphere_button.pressed.connect(_sphere_select)
 	process_button.pressed.connect(_process_selection)
-
+	scale_spin_box.value_changed.connect(_on_scale_changed)
+	render_mode.item_selected.connect(_change_render_mode)
+	
 	# Connect slider to function
 	point_size_slider.value_changed.connect(_on_h_slider_value_changed)
 	
-	scale_spin_box.value_changed.connect(_on_scale_changed)
+	
+func _change_render_mode(mode):
+	splat_mesh_instance.change_render(mode)
 	
 func _on_scale_changed(value):
 	splat_mesh_instance.scale = Vector3(value,value,value)
@@ -242,7 +248,6 @@ func _process_selection() -> void:
 	if not splat_tmp: 
 		print("Failed to create file: ", tmp_file_path)
 		return
-		
 	save_splat_to_file(splat_tmp)
 
 	var output = []
@@ -256,8 +261,9 @@ func _process_selection() -> void:
 	print(output)
 
 func _on_h_slider_value_changed(value) -> void:
-	splat_mesh_instance.multimesh.mesh.radius = value
-	splat_mesh_instance.multimesh.mesh.height = value * 2
+	if render_mode.selected == 0:	# Only change the size of the point mesh
+		var mat: ShaderMaterial = splat_mesh_instance.multimesh.mesh.surface_get_material(0)
+		mat.set_shader_parameter("point_size", value)
 	
 	camera_mesh_instance.multimesh.mesh.radius = value * 2
 	camera_mesh_instance.multimesh.mesh.height = value * 4
@@ -372,13 +378,13 @@ func parse_splat(path: String) -> void:
 		var rot_x = file.get_8()
 		var rot_y = file.get_8()
 		var rot_z = file.get_8()
-		var rot_t = file.get_8()
+		var rot_w = file.get_8()
 		rotations.push_back(rot_x)
 		rotations.push_back(rot_y)
 		rotations.push_back(rot_z)
-		rotations.push_back(rot_t)
+		rotations.push_back(rot_w)
 		
-		var tx = Transform3D(Basis(), Vector3(x, y, z))
+		var tx = Transform3D(Basis(Quaternion(rot_x, rot_y, rot_z, rot_w)).scaled(Vector3(scale_x,scale_y,scale_z)), Vector3(x, y, z))
 		multimesh.set_instance_transform(i, tx)
 		multimesh.set_instance_color(i, Color(r, g, b, a))
 		
@@ -391,7 +397,7 @@ func parse_ply_header(path: String) -> void:
 	var file = FileAccess.open(path, FileAccess.READ)
 	if not file: return
 	if file.get_line().strip_edges() != "ply": return
-		
+	
 	property_list.clear()
 	vertex_count = 0
 	is_binary = false

@@ -1,0 +1,141 @@
+[gd_scene format=3 uid="uid://dvpuwpc3qipod"]
+
+[ext_resource type="Script" uid="uid://big6sh5ko2dbm" path="res://scripts/splat_scene.gd" id="1_2dmn0"]
+[ext_resource type="Script" uid="uid://e3f1ox6y6cvg" path="res://addons/Gizmo3DScript/gizmo3D.gd" id="2_rl1er"]
+[ext_resource type="PackedScene" uid="uid://cwycqeck0i5r7" path="res://scenes/WorldBasis.tscn" id="3_qxygg"]
+[ext_resource type="Script" uid="uid://chh421ho8gry6" path="res://scripts/camera_3d.gd" id="4_l318y"]
+[ext_resource type="Shader" uid="uid://coguy33vxii2b" path="res://shaders/points.gdshader" id="5_2dmn0"]
+[ext_resource type="Shader" uid="uid://dbwyve1c5c45c" path="res://shaders/wireframe.gdshader" id="6_kwwq2"]
+[ext_resource type="Script" uid="uid://oso6o6gopx6p" path="res://scripts/splat_mesh_instance.gd" id="6_rl1er"]
+[ext_resource type="Script" uid="uid://dfq4qgslo7un1" path="res://scripts/crop_box.gd" id="7_2oy7s"]
+[ext_resource type="Shader" uid="uid://2q7nwvrepvp6" path="res://shaders/splat.gdshader" id="7_qxygg"]
+[ext_resource type="Script" uid="uid://cc2cnlquek3de" path="res://scripts/crop_sphere.gd" id="8_2brbc"]
+
+[sub_resource type="Sky" id="Sky_ee4bf"]
+
+[sub_resource type="Environment" id="Environment_kbped"]
+background_mode = 3
+sky = SubResource("Sky_ee4bf")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kbped"]
+shading_mode = 0
+disable_ambient_light = true
+disable_fog = true
+disable_specular_occlusion = true
+vertex_color_use_as_albedo = true
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_iy58a"]
+material = SubResource("StandardMaterial3D_kbped")
+radius = 0.005
+height = 0.01
+radial_segments = 10
+rings = 10
+
+[sub_resource type="MultiMesh" id="MultiMesh_6a6wx"]
+transform_format = 1
+mesh = SubResource("SphereMesh_iy58a")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rl1er"]
+render_priority = 0
+shader = ExtResource("5_2dmn0")
+shader_parameter/point_size = 1.0000000149012
+
+[sub_resource type="PointMesh" id="PointMesh_2dmn0"]
+material = SubResource("ShaderMaterial_rl1er")
+
+[sub_resource type="MultiMesh" id="MultiMesh_0fbet"]
+transform_format = 1
+use_colors = true
+mesh = SubResource("PointMesh_2dmn0")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_l318y"]
+render_priority = 0
+shader = ExtResource("7_qxygg")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nndnu"]
+render_priority = 0
+shader = ExtResource("5_2dmn0")
+shader_parameter/point_size = 10.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hob4j"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ee4bf"]
+render_priority = 1
+shader = ExtResource("6_kwwq2")
+shader_parameter/wire_color = Color(0, 1, 0, 1)
+shader_parameter/base_color = Color(0, 0, 0, 0.05882353)
+shader_parameter/wire_width = 2.0000000475
+
+[sub_resource type="BoxMesh" id="BoxMesh_qtu10"]
+material = SubResource("ShaderMaterial_ee4bf")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1p5nq"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kbped"]
+render_priority = 0
+shader = ExtResource("6_kwwq2")
+shader_parameter/wire_color = Color(0, 1, 0, 1)
+shader_parameter/base_color = Color(0, 0, 0, 0.1)
+shader_parameter/wire_width = 1.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_fj5cn"]
+material = SubResource("ShaderMaterial_kbped")
+radial_segments = 10
+rings = 10
+
+[node name="SplatScene" type="Node3D" unique_id=258248819 node_paths=PackedStringArray("gizmo")]
+script = ExtResource("1_2dmn0")
+gizmo = NodePath("Gizmo3D")
+
+[node name="Gizmo3D" type="Node3D" parent="." unique_id=69674778]
+script = ExtResource("2_rl1er")
+metadata/_custom_type_script = "uid://e3f1ox6y6cvg"
+
+[node name="WorldBasis" parent="." unique_id=350839907 instance=ExtResource("3_qxygg")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1800194422]
+transform = Transform3D(-0.99999994, 0, 8.742277e-08, 0, 1, 0, -8.742277e-08, 0, -0.99999994, 0, 0, -5)
+current = true
+script = ExtResource("4_l318y")
+zoom_strength = 0.7
+zoom_minimum = 0.001
+inertia_strength = 0.4
+metadata/_custom_type_script = "uid://demefs1tns4yw"
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=823530362]
+environment = SubResource("Environment_kbped")
+
+[node name="Objects" type="Node3D" parent="." unique_id=1421273611]
+
+[node name="CameraMeshInstance" type="MultiMeshInstance3D" parent="Objects" unique_id=173724250]
+multimesh = SubResource("MultiMesh_6a6wx")
+
+[node name="Splat" type="StaticBody3D" parent="Objects" unique_id=1620786543]
+
+[node name="SplatMeshInstance" type="MultiMeshInstance3D" parent="Objects/Splat" unique_id=1350058637]
+multimesh = SubResource("MultiMesh_0fbet")
+script = ExtResource("6_rl1er")
+splat_material = SubResource("ShaderMaterial_l318y")
+point_material = SubResource("ShaderMaterial_nndnu")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Objects/Splat" unique_id=621479254]
+shape = SubResource("BoxShape3D_hob4j")
+
+[node name="CropBox" type="Area3D" parent="." unique_id=152878896]
+input_capture_on_drag = true
+
+[node name="CropBox" type="MeshInstance3D" parent="CropBox" unique_id=86961862]
+mesh = SubResource("BoxMesh_qtu10")
+skeleton = NodePath("../../..")
+script = ExtResource("7_2oy7s")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CropBox" unique_id=468522855]
+shape = SubResource("BoxShape3D_1p5nq")
+
+[node name="CropSphere" type="MeshInstance3D" parent="." unique_id=211847932]
+visible = false
+mesh = SubResource("SphereMesh_fj5cn")
+skeleton = NodePath("../..")
+script = ExtResource("8_2brbc")

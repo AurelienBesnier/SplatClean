@@ -1,86 +1,7 @@
 [gd_scene format=3 uid="uid://drxlsccwjqlb0"]
 
 [ext_resource type="Script" uid="uid://banhwokdrg8ni" path="res://scripts/file_io.gd" id="1_tjwpk"]
-[ext_resource type="Script" uid="uid://big6sh5ko2dbm" path="res://scripts/splat_scene.gd" id="2_1p5nq"]
-[ext_resource type="PackedScene" uid="uid://cwycqeck0i5r7" path="res://scenes/WorldBasis.tscn" id="2_lt2xq"]
-[ext_resource type="Shader" uid="uid://dbwyve1c5c45c" path="res://shaders/wireframe.gdshader" id="3_lt2xq"]
-[ext_resource type="Script" uid="uid://dfq4qgslo7un1" path="res://scripts/crop_box.gd" id="4_1p5nq"]
-[ext_resource type="Script" uid="uid://chh421ho8gry6" path="res://scripts/camera_3d.gd" id="5_1p5nq"]
-[ext_resource type="Script" uid="uid://cc2cnlquek3de" path="res://scripts/crop_sphere.gd" id="5_hob4j"]
-[ext_resource type="Script" uid="uid://e3f1ox6y6cvg" path="res://addons/Gizmo3DScript/gizmo3D.gd" id="8_1p5nq"]
-
-[sub_resource type="Sky" id="Sky_ee4bf"]
-
-[sub_resource type="Environment" id="Environment_kbped"]
-background_mode = 3
-sky = SubResource("Sky_ee4bf")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kbped"]
-shading_mode = 0
-disable_ambient_light = true
-disable_fog = true
-disable_specular_occlusion = true
-vertex_color_use_as_albedo = true
-albedo_color = Color(1, 0, 0, 1)
-
-[sub_resource type="SphereMesh" id="SphereMesh_iy58a"]
-material = SubResource("StandardMaterial3D_kbped")
-radius = 0.005
-height = 0.01
-radial_segments = 10
-rings = 10
-
-[sub_resource type="MultiMesh" id="MultiMesh_6a6wx"]
-transform_format = 1
-mesh = SubResource("SphereMesh_iy58a")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qtu10"]
-transparency = 1
-shading_mode = 0
-disable_ambient_light = true
-disable_fog = true
-disable_specular_occlusion = true
-vertex_color_use_as_albedo = true
-disable_receive_shadows = true
-billboard_mode = 1
-
-[sub_resource type="SphereMesh" id="SphereMesh_ee4bf"]
-material = SubResource("StandardMaterial3D_qtu10")
-radius = 0.005
-height = 0.01
-radial_segments = 4
-rings = 2
-
-[sub_resource type="MultiMesh" id="MultiMesh_0fbet"]
-transform_format = 1
-use_colors = true
-mesh = SubResource("SphereMesh_ee4bf")
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_hob4j"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ee4bf"]
-render_priority = 1
-shader = ExtResource("3_lt2xq")
-shader_parameter/wire_color = Color(0, 1, 0, 1)
-shader_parameter/base_color = Color(0, 0, 0, 0.05882353)
-shader_parameter/wire_width = 2.0000000475
-
-[sub_resource type="BoxMesh" id="BoxMesh_qtu10"]
-material = SubResource("ShaderMaterial_ee4bf")
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_1p5nq"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_kbped"]
-render_priority = 0
-shader = ExtResource("3_lt2xq")
-shader_parameter/wire_color = Color(0, 1, 0, 1)
-shader_parameter/base_color = Color(0, 0, 0, 0.1)
-shader_parameter/wire_width = 1.0
-
-[sub_resource type="SphereMesh" id="SphereMesh_fj5cn"]
-material = SubResource("ShaderMaterial_kbped")
-radial_segments = 10
-rings = 10
+[ext_resource type="PackedScene" uid="uid://dvpuwpc3qipod" path="res://scenes/splat_scene.tscn" id="2_r67kn"]
 
 [node name="Control" type="Control" unique_id=1717159827]
 layout_mode = 3
@@ -117,10 +38,10 @@ size_flags_horizontal = 3
 size_flags_vertical = 4
 size_flags_stretch_ratio = 11.67
 tooltip_text = "Size of splat points"
-min_value = 0.001
-max_value = 0.1
-step = 0.001
-value = 0.001
+min_value = 1.0
+max_value = 200.0
+step = 0.1
+value = 1.0
 
 [node name="ScaleLabel" type="Label" parent="VBoxContainer/TopMenu" unique_id=1583478495]
 layout_mode = 2
@@ -151,58 +72,7 @@ handle_input_locally = false
 size = Vector2i(1280, 591)
 render_target_update_mode = 4
 
-[node name="SplatScene" type="Node3D" parent="VBoxContainer/SubViewportContainer/SubViewport" unique_id=862694077 node_paths=PackedStringArray("gizmo")]
-script = ExtResource("2_1p5nq")
-gizmo = NodePath("Gizmo3D")
-
-[node name="Gizmo3D" type="Node3D" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=805975491]
-script = ExtResource("8_1p5nq")
-metadata/_custom_type_script = "uid://e3f1ox6y6cvg"
-
-[node name="WorldBasis" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=350839907 instance=ExtResource("2_lt2xq")]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
-
-[node name="Camera3D" type="Camera3D" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=1169085170]
-transform = Transform3D(-0.99999994, 0, 8.742277e-08, 0, 1, 0, -8.742277e-08, 0, -0.99999994, 0, 0, -5)
-current = true
-script = ExtResource("5_1p5nq")
-zoom_strength = 0.7
-zoom_minimum = 0.001
-inertia_strength = 0.4
-metadata/_custom_type_script = "uid://demefs1tns4yw"
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=713593165]
-environment = SubResource("Environment_kbped")
-
-[node name="Objects" type="Node3D" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=1183832921]
-
-[node name="CameraMeshInstance" type="MultiMeshInstance3D" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene/Objects" unique_id=2062584244]
-multimesh = SubResource("MultiMesh_6a6wx")
-
-[node name="Splat" type="StaticBody3D" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene/Objects" unique_id=1073967632]
-
-[node name="SplatMeshInstance" type="MultiMeshInstance3D" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene/Objects/Splat" unique_id=2086659988]
-multimesh = SubResource("MultiMesh_0fbet")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene/Objects/Splat" unique_id=361582911]
-shape = SubResource("BoxShape3D_hob4j")
-
-[node name="CropBox" type="Area3D" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=330941127]
-input_capture_on_drag = true
-
-[node name="CropBox" type="MeshInstance3D" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene/CropBox" unique_id=2051612055]
-mesh = SubResource("BoxMesh_qtu10")
-skeleton = NodePath("../../..")
-script = ExtResource("4_1p5nq")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene/CropBox" unique_id=486052756]
-shape = SubResource("BoxShape3D_1p5nq")
-
-[node name="CropSphere" type="MeshInstance3D" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=1712269179]
-visible = false
-mesh = SubResource("SphereMesh_fj5cn")
-skeleton = NodePath("../..")
-script = ExtResource("5_hob4j")
+[node name="SplatScene" parent="VBoxContainer/SubViewportContainer/SubViewport" unique_id=258248819 instance=ExtResource("2_r67kn")]
 
 [node name="ToolContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=404010446]
 layout_mode = 2
@@ -225,6 +95,15 @@ text = "Crop Box"
 [node name="CropSphereButton" type="Button" parent="VBoxContainer/ToolContainer" unique_id=1984234570]
 layout_mode = 2
 text = "Crop Sphere"
+
+[node name="RenderOptions" type="OptionButton" parent="VBoxContainer/ToolContainer" unique_id=1087133059]
+layout_mode = 2
+selected = 0
+item_count = 2
+popup/item_0/text = "Centers"
+popup/item_0/id = 0
+popup/item_1/text = "Shaded"
+popup/item_1/id = 1
 
 [node name="OpenFileDialog" type="FileDialog" parent="." unique_id=245247398]
 title = "Open a File"
