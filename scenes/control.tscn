@@ -157,7 +157,6 @@ gizmo = NodePath("Gizmo3D")
 
 [node name="Gizmo3D" type="Node3D" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=805975491]
 script = ExtResource("8_1p5nq")
-mode = 3
 metadata/_custom_type_script = "uid://e3f1ox6y6cvg"
 
 [node name="WorldBasis" parent="VBoxContainer/SubViewportContainer/SubViewport/SplatScene" unique_id=350839907 instance=ExtResource("2_lt2xq")]

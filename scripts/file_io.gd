@@ -237,8 +237,7 @@ func _sphere_select() -> void:
 
 func _process_selection() -> void:
 	# Prepare data in temporary directory (eg. /tmp)
-	# TODO: make it mutliplatform
-	var tmp_file_path = '/tmp/splat_clean_tmp.splat'
+	var tmp_file_path = OS.get_temp_dir() + '/splat_clean_tmp.splat'
 	var splat_tmp = FileAccess.open(tmp_file_path, FileAccess.WRITE)
 	if not splat_tmp: 
 		print("Failed to create file: ", tmp_file_path)
