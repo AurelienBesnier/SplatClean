@@ -52,27 +52,28 @@ layout_mode = 2
 min_value = -100.0
 value = 1.0
 
-[node name="StatContainer" type="VBoxContainer" parent="VBoxContainer" unique_id=974785991]
-layout_mode = 2
-
-[node name="NumberLabel" type="Label" parent="VBoxContainer/StatContainer" unique_id=2002054961]
-layout_mode = 2
-text = "Number of Gaussians: "
-
-[node name="SelectedLabel" type="Label" parent="VBoxContainer/StatContainer" unique_id=689768568]
-layout_mode = 2
-text = "Selected: "
-
 [node name="SubViewportContainer" type="SubViewportContainer" parent="VBoxContainer" unique_id=1999908508]
 layout_mode = 2
 mouse_target = true
 
 [node name="SubViewport" type="SubViewport" parent="VBoxContainer/SubViewportContainer" unique_id=620041459]
 handle_input_locally = false
-size = Vector2i(1280, 591)
+size = Vector2i(1280, 647)
 render_target_update_mode = 4
 
 [node name="SplatScene" parent="VBoxContainer/SubViewportContainer/SubViewport" unique_id=258248819 instance=ExtResource("2_r67kn")]
+
+[node name="StatContainer" type="VBoxContainer" parent="VBoxContainer/SubViewportContainer/SubViewport" unique_id=974785991]
+offset_right = 1280.0
+offset_bottom = 50.0
+
+[node name="NumberLabel" type="Label" parent="VBoxContainer/SubViewportContainer/SubViewport/StatContainer" unique_id=2002054961]
+layout_mode = 2
+text = "Number of Gaussians: "
+
+[node name="SelectedLabel" type="Label" parent="VBoxContainer/SubViewportContainer/SubViewport/StatContainer" unique_id=689768568]
+layout_mode = 2
+text = "Selected: "
 
 [node name="ToolContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=404010446]
 layout_mode = 2

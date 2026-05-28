@@ -14,7 +14,7 @@ extends Control
 @onready var crop_sphere: MeshInstance3D = $VBoxContainer/SubViewportContainer/SubViewport/SplatScene/CropSphere
 
 @onready var point_size_slider: HSlider = $"VBoxContainer/TopMenu/HSlider"
-@onready var number_label: Label = $"VBoxContainer/StatContainer/NumberLabel"
+@onready var number_label: Label = $"VBoxContainer/SubViewportContainer/SubViewport/StatContainer/NumberLabel"
 @onready var scale_spin_box: SpinBox = $"VBoxContainer/TopMenu/ScaleSpinBox"
 
 @onready var process_button: Button = $"VBoxContainer/ToolContainer/AnalysisContainer/ProcessButton"

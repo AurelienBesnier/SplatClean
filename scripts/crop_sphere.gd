@@ -13,7 +13,7 @@ extends MeshInstance3D
 @export var reset := &"reset"
 
 @onready var splat_mesh_instance: MultiMeshInstance3D = $"../Objects/Splat/SplatMeshInstance"
-@onready var selected_label : Label = $"../../../../StatContainer/SelectedLabel"
+@onready var selected_label : Label = $"../../StatContainer/SelectedLabel"
 
 const SCALE_INCREMENT = 0.05
 const MOVE_INCREMENT = 0.05

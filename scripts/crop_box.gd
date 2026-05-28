@@ -14,7 +14,7 @@ extends MeshInstance3D
 
 @onready var splat_mesh_instance: MultiMeshInstance3D = $"../../Objects/Splat/SplatMeshInstance"
 @onready var gizmo: Gizmo3D = $"../../Gizmo3D"
-@onready var selected_label : Label = $"../../../../../StatContainer/SelectedLabel"
+@onready var selected_label : Label = $"../../../StatContainer/SelectedLabel"
 
 const SCALE_INCREMENT = 0.05
 const MOVE_INCREMENT = 0.05
