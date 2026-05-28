@@ -265,9 +265,6 @@ func _on_h_slider_value_changed(value) -> void:
 		var mat: ShaderMaterial = splat_mesh_instance.multimesh.mesh.surface_get_material(0)
 		mat.set_shader_parameter("point_size", value)
 	
-	camera_mesh_instance.multimesh.mesh.radius = value * 2
-	camera_mesh_instance.multimesh.mesh.height = value * 4
-
 func _camera_selected(path: String) -> void:
 	print("Selected camera file: ", path)
 	camera_file_path = path
@@ -286,8 +283,12 @@ func _camera_selected(path: String) -> void:
 	var i: int = 0
 	for key in json.data:
 		var cam_pos = key['position']
+		var cam_rotation = key['rotation']
+		var row_0 = Vector3(cam_rotation[0][0], cam_rotation[0][1], cam_rotation[0][2])
+		var row_1 = Vector3(cam_rotation[1][0], cam_rotation[1][1], cam_rotation[1][2])
+		var row_2 = Vector3(cam_rotation[2][0], cam_rotation[2][1], cam_rotation[2][2])
 		
-		var tx = Transform3D(Basis(), Vector3(cam_pos[0], cam_pos[1], cam_pos[2]))
+		var tx = Transform3D(Basis(row_0, row_1, row_2), Vector3(cam_pos[0], cam_pos[1], cam_pos[2]))
 		camera_mesh_instance.multimesh.set_instance_transform(i, tx)
 		i+=1
 
