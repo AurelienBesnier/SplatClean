@@ -85,6 +85,11 @@ layout_mode = 2
 layout_mode = 2
 text = "Process"
 
+[node name="NameEdit" type="LineEdit" parent="VBoxContainer/ToolContainer/AnalysisContainer" unique_id=1721360491]
+layout_mode = 2
+placeholder_text = "Object name"
+expand_to_text_length = true
+
 [node name="Panel" type="Panel" parent="VBoxContainer/ToolContainer" unique_id=1286330606]
 layout_mode = 2
 size_flags_horizontal = 3
