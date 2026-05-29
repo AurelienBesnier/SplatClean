@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" uid="uid://banhwokdrg8ni" path="res://scripts/file_io.gd" id="1_tjwpk"]
 [ext_resource type="PackedScene" uid="uid://dvpuwpc3qipod" path="res://scenes/splat_scene.tscn" id="2_r67kn"]
+[ext_resource type="Texture2D" uid="uid://cts7l1f7ni4bu" path="res://assets/spinner.png" id="3_8n18e"]
+[ext_resource type="Script" uid="uid://n0xg45pych8o" path="res://scripts/spinner.gd" id="4_tjwpk"]
 
 [node name="Control" type="Control" unique_id=1717159827]
 layout_mode = 3
@@ -89,6 +91,19 @@ text = "Process"
 layout_mode = 2
 placeholder_text = "Object name"
 expand_to_text_length = true
+
+[node name="SpinnerWrapper" type="Control" parent="VBoxContainer/ToolContainer/AnalysisContainer" unique_id=64719025]
+visible = false
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+
+[node name="Spinner" type="TextureRect" parent="VBoxContainer/ToolContainer/AnalysisContainer/SpinnerWrapper" unique_id=1712683564]
+layout_mode = 0
+offset_right = 32.0
+offset_bottom = 32.0
+pivot_offset = Vector2(16, 16)
+texture = ExtResource("3_8n18e")
+script = ExtResource("4_tjwpk")
 
 [node name="Panel" type="Panel" parent="VBoxContainer/ToolContainer" unique_id=1286330606]
 layout_mode = 2

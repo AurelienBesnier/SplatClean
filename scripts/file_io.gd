@@ -19,6 +19,7 @@ extends Control
 
 @onready var process_button: Button = $"VBoxContainer/ToolContainer/AnalysisContainer/ProcessButton"
 @onready var object_name: LineEdit = $"VBoxContainer/ToolContainer/AnalysisContainer/NameEdit"
+@onready var spinner: Control = $VBoxContainer/ToolContainer/AnalysisContainer/SpinnerWrapper
 @onready var crop_box_button: Button = $"VBoxContainer/ToolContainer/CropBoxButton"
 @onready var crop_sphere_button: Button = $"VBoxContainer/ToolContainer/CropSphereButton"
 
@@ -253,7 +254,7 @@ func _process_selection() -> void:
 		print("Failed to create file: ", tmp_file_path)
 		return
 	save_splat_to_file(splat_tmp)
-
+	spinner.visible = true
 	var process_thread = Thread.new()
 	# Start the thread and point it to our function
 	var thread_callable = _process_in_background.bind(tmp_file_path)
@@ -272,6 +273,7 @@ func _process_in_background(file_path):
 	_on_process_finished.call_deferred(exit_code, output)
 
 func _on_process_finished(exit_code: int, output: Array):
+	spinner.visible = false
 	print("exit code: ", exit_code)
 	if output.size() > 0:
 		print("Output:\n", output[0])
