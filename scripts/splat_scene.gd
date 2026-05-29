@@ -4,10 +4,14 @@ extends Node3D
 var gizmo : Gizmo3D
 var _add : bool
 
+@onready var world_basis = $WorldBasis
+
 func _process(_delta):
 	_add = Input.is_action_pressed("add_target")
 
 func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("toggle basis"):
+		world_basis.visible = !world_basis.visible
 	# Toggle modes
 	if event.is_action_pressed("move_mode"):
 		gizmo.mode ^= Gizmo3D.ToolMode.MOVE

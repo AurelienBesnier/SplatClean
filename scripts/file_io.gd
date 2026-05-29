@@ -82,6 +82,7 @@ func _change_render_mode(mode):
 func _on_scale_changed(value):
 	splat_mesh_instance.scale = Vector3(value,value,value)
 
+#region WebInterface
 func handle_open_dialog(dialog):
 	if OS.has_feature("web"):
 		trigger_web_upload() # Custom JS implementation
@@ -229,7 +230,7 @@ func read_bytes_as_cam(data: PackedByteArray) -> void:
 		var tx = Transform3D(Basis(), Vector3(cam_pos[0], cam_pos[1], cam_pos[2]))
 		camera_mesh_instance.multimesh.set_instance_transform(i, tx)
 		i+=1
-
+#endregion
 func _box_select() -> void:
 	crop_box.visible = true
 	crop_sphere.visible = false
