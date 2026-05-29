@@ -165,6 +165,7 @@ func read_bytes_as_splat(data: PackedByteArray) -> void:
 		var tx = Transform3D(Basis(), Vector3(x, y, z))
 		multimesh.set_instance_transform(instance_idx, tx)
 		multimesh.set_instance_color(instance_idx, Color(r, g, b, a))
+		
 		instance_idx += 1
 	print("Done !")
 	
@@ -241,6 +242,7 @@ func _sphere_select() -> void:
 	
 	crop_sphere.position = Vector3(0,0,0)
 
+#region Processing 
 func _process_selection() -> void:
 	# Prepare data in temporary directory (eg. /tmp)
 	var tmp_file_path = OS.get_temp_dir() + '/splat_clean_tmp.splat'
@@ -250,15 +252,30 @@ func _process_selection() -> void:
 		return
 	save_splat_to_file(splat_tmp)
 
+	var process_thread = Thread.new()
+	# Start the thread and point it to our function
+	var thread_callable = _process_in_background.bind(tmp_file_path)
+	process_thread.start(thread_callable)
+	
+func _process_in_background(file_path):
 	var output = []
 	var platform = OS.get_name()
+	var exit_code
 	if platform == "Windows":
 		# TODO: make a powershell version
 		print("Cannot run bash scripts on windows")
+		exit_code = 1
 	else:
-		var exit_code = OS.execute("bash", ["./scripts/processing.sh", tmp_file_path, camera_file_path], output, true, false)
+		exit_code = OS.execute("bash", ["./scripts/processing.sh", file_path, camera_file_path], output, true, false)
 		print(exit_code)
 	print(output)
+	_on_process_finished.call_deferred(exit_code, output)
+
+func _on_process_finished(exit_code: int, output: Array):
+	print("exit code: ", exit_code)
+	if output.size() > 0:
+		print("Output:\n", output[0])
+#endregion
 
 func _on_h_slider_value_changed(value) -> void:
 	if render_mode.selected == 0:	# Only change the size of the point mesh

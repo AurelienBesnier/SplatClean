@@ -115,6 +115,7 @@ multimesh = SubResource("MultiMesh_6a6wx")
 [node name="Splat" type="StaticBody3D" parent="Objects" unique_id=1620786543]
 
 [node name="SplatMeshInstance" type="MultiMeshInstance3D" parent="Objects/Splat" unique_id=1350058637]
+cast_shadow = 0
 multimesh = SubResource("MultiMesh_0fbet")
 script = ExtResource("6_rl1er")
 splat_material = SubResource("ShaderMaterial_l318y")

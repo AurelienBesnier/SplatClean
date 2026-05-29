@@ -92,7 +92,6 @@ void fragment() {
 	// Drop the falloff power slightly if you want the edges to be less blurry (e.g., 0.5 to 0.8)
 	float falloff_sharpness = 1.0; 
 	// ------------------------
-
 	// Reconstruct the 2D Gaussian ellipse distance matrix
 	float d = -0.5 * (v_conic.x * UV.x * UV.x + 2.0 * v_conic.y * UV.x * UV.y + v_conic.z * UV.y * UV.y);
 	
