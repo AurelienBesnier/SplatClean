@@ -268,9 +268,7 @@ func _process_in_background(file_path):
 		print("Cannot run bash scripts on windows")
 		exit_code = 1
 	else:
-		exit_code = OS.execute("bash", ["./scripts/processing.sh", file_path, camera_file_path, object_name], output, true, false)
-		print(exit_code)
-	print(output)
+		exit_code = OS.execute("bash", ["./scripts/processing.sh", file_path, camera_file_path, object_name.text], output, true, false)
 	_on_process_finished.call_deferred(exit_code, output)
 
 func _on_process_finished(exit_code: int, output: Array):
@@ -363,6 +361,11 @@ func _save_file() -> void:
 func parse_splat(path: String) -> void:
 	var file = FileAccess.open(path, FileAccess.READ)
 	if not file: return
+	
+	# Get object name from path (very specific to my layout)
+	var splits = path.split("/")
+	if len(splits) > 3:
+		object_name.text = path.split("/")[-3]
 
 	is_binary = true
 	var max_points_to_load = int(float(file.get_length()) / splat_size) # to make godot happy
