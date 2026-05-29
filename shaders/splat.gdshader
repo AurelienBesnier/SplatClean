@@ -1,7 +1,7 @@
 shader_type spatial;
 render_mode blend_mix, depth_draw_never, cull_disabled, unshaded;
 
-varying vec2 v_conic;
+varying vec3 v_conic;
 varying vec3 v_color;
 varying float v_opacity;
 
@@ -20,23 +20,23 @@ void vertex() {
 
 	vec4 cam_pos = VIEW_MATRIX * vec4(world_pos, 1.0);
 	
+	float near_plane_limit = -0.1; 
+	
 	// Check if the splat in front of camera
-	if (cam_pos.z < 0.0) {
-		// Project 3D Covariance to 2D Screen Space
-		float focal = PROJECTION_MATRIX[1][1] * (0.5 * VIEWPORT_SIZE.y); 
-		float limx = 1.3 * VIEWPORT_SIZE.x / focal;
-		float limy = 1.3 * VIEWPORT_SIZE.y / focal;
-		float txtz = cam_pos.x / cam_pos.z;
-		float tytz = cam_pos.y / cam_pos.z;
+	if (cam_pos.z < near_plane_limit) {
+		float abs_z = abs(cam_pos.z);
 		
-		txtz = clamp(txtz, -limx, limx) * cam_pos.z;
-		tytz = clamp(tytz, -limy, limy) * cam_pos.z;
+		float focal_x = PROJECTION_MATRIX[0][0] * (0.5 * VIEWPORT_SIZE.x);
+		float focal_y = PROJECTION_MATRIX[1][1] * (0.5 * VIEWPORT_SIZE.y); 
+		
+		float txtz = cam_pos.x / abs_z;
+		float tytz = cam_pos.y / abs_z;
 
 		// Jacobian matrix
 		mat3 J = mat3(
-			vec3(focal / cam_pos.z, 0.0, -(focal * txtz) / (cam_pos.z * cam_pos.z)),
-			vec3(0.0, focal / cam_pos.z, -(focal * tytz) / (cam_pos.z * cam_pos.z)),
-			vec3(0.0, 0.0, 0.0)
+			vec3(focal_x / abs_z, 0.0, 0.0),
+			vec3(0.0, focal_y / abs_z, 0.0),
+			vec3(-(focal_x * txtz) / abs_z, -(focal_y * tytz) / abs_z, 0.0)
 		);
 
 		mat3 W = mat3(VIEW_MATRIX);
@@ -50,50 +50,64 @@ void vertex() {
 		// Invert 2D Covariance to get the Ellipsoid Conic
 		float det = cov2D[0][0] * cov2D[1][1] - cov2D[0][1] * cov2D[0][1];
 		
-		if (det != 0.0) {
+		if (det > 0.0001) {
 			float det_inv = 1.0 / det;
 			vec3 conic = vec3(cov2D[1][1] * det_inv, -cov2D[0][1] * det_inv, cov2D[0][0] * det_inv);
 
 			// Find bounding box of the screen-space ellipse
 			float mid = 0.5 * (cov2D[0][0] + cov2D[1][1]);
-			float lambda1 = mid + sqrt(max(0.1, mid * mid - det));
-			float lambda2 = mid - sqrt(max(0.1, mid * mid - det));
+			float term = sqrt(max(0.1, mid * mid - det));
+			float lambda1 = mid + term;
+			float lambda2 = mid - term;
+			
 			float radius = ceil(3.0 * sqrt(max(lambda1, lambda2)));
+			radius = min(radius, max(VIEWPORT_SIZE.x, VIEWPORT_SIZE.y)); 
 			
 			// Convert radius from screen pixels back to NDC / View Space offset
 			vec2 screen_offset = VERTEX.xy * radius; 
 			vec4 clip_pos = PROJECTION_MATRIX * cam_pos;
+			
 			clip_pos.xy += (screen_offset / VIEWPORT_SIZE) * clip_pos.w * 2.0;
 
-			// Output projection
 			POSITION = clip_pos;
 
 			// Pass variables to fragment shader
-			v_conic = conic.xy;
-			v_conic.y = conic.y;
+			v_conic = conic; 
 			v_color = COLOR.rgb;
 			v_opacity = COLOR.a;
 			UV = screen_offset; 
 		} else {
-			// Collapse geometry if determinant is zero
-			VERTEX = vec3(0.0);
+			POSITION = vec4(0.0);
 		}
 	} else {
-		// Collapse geometry if behind camera
-		VERTEX = vec3(0.0);
+		// Instantly throw away vertices that bypass the near plane
+		POSITION = vec4(0.0);
 	}
 }
 
 void fragment() {
-	// Reconstruct exact distance based on the Projected Ellipse Conic
-	float d = -0.5 * (v_conic.x * UV.x * UV.x + 2.0 * v_conic.y * UV.x * UV.y + v_conic.y * UV.y * UV.y);
+	// --- TWEAK PARAMETERS ---
+	// Increase density to make the splat core thicker/more opaque (e.g., 1.5 to 3.0)
+	float density_multiplier = 1.5; 
+	// Drop the falloff power slightly if you want the edges to be less blurry (e.g., 0.5 to 0.8)
+	float falloff_sharpness = 1.0; 
+	// ------------------------
+
+	// Reconstruct the 2D Gaussian ellipse distance matrix
+	float d = -0.5 * (v_conic.x * UV.x * UV.x + 2.0 * v_conic.y * UV.x * UV.y + v_conic.z * UV.y * UV.y);
 	
 	if (d > 0.0) {
 		discard;
 	}
 	
-	float alpha = exp(d) * v_opacity;
-	if (alpha < 0.05) {
+	// Apply the sharpness adjustment to the mathematical falloff
+	float gaussian_falloff = exp(d * falloff_sharpness);
+	
+	// Multiply by opacity and density multiplier, then clamp to standard 0.0-1.0 range
+	float alpha = clamp(gaussian_falloff * v_opacity * density_multiplier, 0.0, 1.0);
+	
+	// Lower cutoff allows softer edges to stay visible, higher cuts off early
+	if (alpha < 0.2) {
 		discard;
 	}
 
