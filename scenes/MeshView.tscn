@@ -12,9 +12,10 @@ shader_parameter/shininess = 24.0
 
 [node name="MeshView" type="Node3D" unique_id=2065950553]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=279862154]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=279862154 node_paths=PackedStringArray("camera")]
 script = ExtResource("1_4ebgs")
 material = SubResource("ShaderMaterial_r74bk")
+camera = NodePath("../TrackballCamera")
 
 [node name="TrackballCamera" type="Camera3D" parent="." unique_id=419741164]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)

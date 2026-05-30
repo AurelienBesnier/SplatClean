@@ -277,6 +277,19 @@ func _on_process_finished(exit_code: int, output: Array):
 	print("exit code: ", exit_code)
 	if output.size() > 0:
 		print("Output:\n", output[0])
+	if FileAccess.file_exists("Archicrop.obj"): # Display result in seperate window
+		var scene_resource = load("res://scenes/MeshView.tscn")
+		var scene_instance = scene_resource.instantiate()
+		
+		var new_window = Window.new()
+		new_window.title = "Mesh Viewer"
+		new_window.size = Vector2i(800, 600)
+		new_window.transient = false 
+		new_window.world_3d = World3D.new()
+		new_window.add_child(scene_instance)
+		new_window.close_requested.connect(func(): new_window.queue_free())
+		get_tree().root.add_child(new_window)
+		new_window.position = DisplayServer.window_get_position() + Vector2i(50, 50)
 #endregion
 
 func _on_h_slider_value_changed(value) -> void:

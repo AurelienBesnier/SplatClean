@@ -3,7 +3,8 @@ extends MeshInstance3D
 @export
 var material: ShaderMaterial
 
-@onready var camera = $"../TrackballCamera"
+@export
+var camera: Camera3D
 
 func _ready() -> void:
 	var test_path := "res://assets/Archicrop.obj"
