@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://w8375y4hfvw0"]
+
+[ext_resource type="Script" uid="uid://dusuxv2yqo31o" path="res://scripts/mesh_loader.gd" id="1_4ebgs"]
+[ext_resource type="Script" uid="uid://demefs1tns4yw" path="res://addons/goutte.camera.trackball/trackball_camera.gd" id="2_ae8pf"]
+[ext_resource type="Shader" uid="uid://dojlkwvd3613r" path="res://shaders/eye_light.gdshader" id="2_xp361"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_r74bk"]
+render_priority = 0
+shader = ExtResource("2_xp361")
+shader_parameter/albedo = Color(0, 0.735357, 0, 1)
+shader_parameter/shininess = 24.0
+
+[node name="MeshView" type="Node3D" unique_id=2065950553]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=279862154]
+script = ExtResource("1_4ebgs")
+material = SubResource("ShaderMaterial_r74bk")
+
+[node name="TrackballCamera" type="Camera3D" parent="." unique_id=419741164]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
+script = ExtResource("2_ae8pf")
+zoom_strength = 5.0
+zoom_maximum = 1000.0
+metadata/_custom_type_script = "uid://demefs1tns4yw"
