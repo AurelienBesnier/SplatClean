@@ -7,7 +7,7 @@ var material: ShaderMaterial
 var camera: Camera3D
 
 func _ready() -> void:
-	var test_path := "res://assets/Archicrop.obj"
+	var test_path := "./Archicrop.obj"
 	var imported_mesh = load_obj_at_runtime(test_path)
 	if imported_mesh:
 		self.mesh = imported_mesh
