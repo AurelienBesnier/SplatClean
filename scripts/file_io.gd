@@ -277,7 +277,7 @@ func _on_process_finished(exit_code: int, output: Array):
 	print("exit code: ", exit_code)
 	if output.size() > 0:
 		print("Output:\n", output[0])
-	if FileAccess.file_exists("Archicrop.obj"): # Display result in seperate window
+	if exit_code==0 and FileAccess.file_exists("Archicrop.obj"): # Display result in seperate window
 		var load_thread = Thread.new()
 		var thread_callable = _load_window_background.bind()
 		load_thread.start(thread_callable)
