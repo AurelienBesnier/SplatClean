@@ -129,15 +129,18 @@ popup/item_1/id = 1
 [node name="OpenFileDialog" type="FileDialog" parent="." unique_id=245247398]
 title = "Open a File"
 file_mode = 0
+display_mode = 1
 access = 2
 filters = PackedStringArray("*.splat, *.ply; Gaussian Splatting Files")
 
 [node name="OpenCameraDialog" type="FileDialog" parent="." unique_id=1198926968]
 title = "Open a File"
 file_mode = 0
+display_mode = 1
 access = 2
 filters = PackedStringArray("*.json; Camera position file")
 
 [node name="SaveFileDialog" type="FileDialog" parent="." unique_id=1372098284]
+display_mode = 1
 access = 2
 filters = PackedStringArray("*.splat, *.ply; Gaussian Splatting Files")
