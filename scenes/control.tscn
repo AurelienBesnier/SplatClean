@@ -105,6 +105,10 @@ pivot_offset = Vector2(16, 16)
 texture = ExtResource("3_8n18e")
 script = ExtResource("4_tjwpk")
 
+[node name="SkipFilteringBox" type="CheckBox" parent="VBoxContainer/ToolContainer/AnalysisContainer" unique_id=1414535781]
+layout_mode = 2
+text = "Skip filtering"
+
 [node name="Panel" type="Panel" parent="VBoxContainer/ToolContainer" unique_id=1286330606]
 layout_mode = 2
 size_flags_horizontal = 3

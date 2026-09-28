@@ -18,6 +18,7 @@ extends Control
 @onready var scale_spin_box: SpinBox = $"VBoxContainer/TopMenu/ScaleSpinBox"
 
 @onready var process_button: Button = $"VBoxContainer/ToolContainer/AnalysisContainer/ProcessButton"
+@onready var skip_filtering: Button = $"VBoxContainer/ToolContainer/AnalysisContainer/SkipFilteringBox"
 @onready var object_name: LineEdit = $"VBoxContainer/ToolContainer/AnalysisContainer/NameEdit"
 @onready var spinner: Control = $VBoxContainer/ToolContainer/AnalysisContainer/SpinnerWrapper
 @onready var crop_box_button: Button = $"VBoxContainer/ToolContainer/CropBoxButton"
@@ -269,7 +270,7 @@ func _process_in_background(file_path):
 		print("Cannot run bash scripts on windows")
 		exit_code = 1
 	else:
-		exit_code = OS.execute("bash", ["./scripts/processing.sh", file_path, camera_file_path, object_name.text], output, true, false)
+		exit_code = OS.execute("bash", ["./scripts/processing.sh", file_path, camera_file_path, object_name.text, skip_filtering.button_pressed], output, true, false)
 	_on_process_finished.call_deferred(exit_code, output)
 
 func _on_process_finished(exit_code: int, output: Array):
