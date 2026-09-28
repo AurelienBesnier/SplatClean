@@ -395,8 +395,9 @@ func get_scale_snap() -> float:
 
 func _unhandled_input(event : InputEvent) -> void:
 	_hovering = false
-	if !visible:
+	if !visible or get_viewport().get_camera_3d() == null:
 		_editing = false
+		_edit.mode = TransformMode.NONE
 	elif event is InputEventKey:
 		if event.keycode == KEY_CTRL:
 			_snapping = event.pressed
@@ -474,6 +475,9 @@ func get_selected_count() -> int:
 
 func _enter_tree() -> void:
 	get_tree().root.focus_exited.connect(_on_focus_exited)
+	if is_node_ready():
+		_init_gizmo_instance()
+		_update_transform_gizmo()
 
 func _process(delta : float) -> void:
 	_update_transform_gizmo()
@@ -877,9 +881,12 @@ func _update_transform_gizmo_view() -> void:
 		return
 	
 	var camera := get_viewport().get_camera_3d()
+	if camera == null:
+		_set_visibility(false)
+		return
+	
 	var xform := transform
 	var camera_transform := camera.global_transform
-	
 	if xform.origin.is_equal_approx(camera_transform.origin):
 		_set_visibility(false)
 		return
