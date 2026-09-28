@@ -345,7 +345,6 @@ func save_splat_to_file(file):
 		if col.a8 > 3 :
 			var transform = splat_mesh_instance.multimesh.get_instance_transform(i)
 			var pos = splat_mesh_instance.global_transform * transform.origin
-			print(pos)
 			# Position
 			file.store_float(pos.x)
 			file.store_float(pos.y)
