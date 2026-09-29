@@ -285,15 +285,26 @@ func _on_process_finished(exit_code: int, output: Array):
 			var json_string = file.get_as_text()
 			file.close()
 			var json = JSON.new()
-			var result = json.parse(json_string)
-			if result != OK:
-				print("JSON Parse Error: ", json.get_error_message(), " at line ", json.get_error_line())
-				return
+			var _result = json.parse(json_string)
 			print(json.data)
 		if FileAccess.file_exists("Archicrop.obj"): # Display result in seperate window
 			var load_thread = Thread.new()
 			var thread_callable = _load_window_background_mesh.bind()
 			load_thread.start(thread_callable)
+
+func _load_window_background_segmentation():
+	var scene_resource = load("res://scenes/SegmentationView.tscn")
+	var scene_instance = scene_resource.instantiate()
+	
+	var new_window = Window.new()
+	new_window.title = "Segmentation View"
+	new_window.size = Vector2i(800, 600)
+	new_window.transient = false 
+	new_window.world_3d = World3D.new()
+	new_window.add_child(scene_instance)
+	new_window.close_requested.connect(func(): new_window.queue_free())
+	get_tree().root.call_deferred("add_child", new_window)
+	new_window.position = DisplayServer.window_get_position() + Vector2i(50, 50)
 		
 func _load_window_background_mesh():
 	var scene_resource = load("res://scenes/MeshView.tscn")
@@ -326,7 +337,7 @@ func _camera_selected(path: String) -> void:
 	var json = JSON.new()
 	var result = json.parse(json_string)
 	if result != OK:
-		print("JSON Parse Error: ", json.get_error_message(), " at line ", json.get_error_line())
+		printerr("JSON Parse Error: ", json.get_error_message(), " at line ", json.get_error_line())
 		return
 	camera_mesh_instance.multimesh.instance_count = len(json.data)
 	

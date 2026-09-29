@@ -21,7 +21,7 @@ func update_camera_position():
 	var initial_position = camera.position
 	camera.position = Vector3(initial_position.x,initial_position.y,max_position)
 
-func load_obj_at_runtime(file_path: String) -> ArrayMesh:
+static func load_obj_at_runtime(file_path: String) -> ArrayMesh:
 	var file = FileAccess.open(file_path, FileAccess.READ)
 	if not file: return
 	var text = file.get_as_text()
@@ -72,7 +72,7 @@ func load_obj_at_runtime(file_path: String) -> ArrayMesh:
 
 	return st.commit()
 
-func _add_face_vertex(token: String, vertices: PackedVector3Array, uvs: PackedVector2Array, normals: PackedVector3Array, st: SurfaceTool) -> void:
+static func _add_face_vertex(token: String, vertices: PackedVector3Array, uvs: PackedVector2Array, normals: PackedVector3Array, st: SurfaceTool) -> void:
 	var indices = token.split("/")
 	if indices.size() > 1 and not indices[1].is_empty():
 		var uv_index = int(indices[1]) - 1

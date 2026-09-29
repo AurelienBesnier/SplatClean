@@ -1,6 +1,32 @@
 [gd_scene format=3 uid="uid://bwokiaktipik0"]
 
 [ext_resource type="Script" uid="uid://ck1yfpsubljfv" path="res://scripts/segmentation_view.gd" id="1_8s4yy"]
+[ext_resource type="Script" uid="uid://demefs1tns4yw" path="res://addons/goutte.camera.trackball/trackball_camera.gd" id="2_26ono"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_26ono"]
+shading_mode = 0
+vertex_color_use_as_albedo = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_8vjdo"]
+material = SubResource("StandardMaterial3D_26ono")
+
+[sub_resource type="MultiMesh" id="MultiMesh_26ono"]
+transform_format = 1
+use_colors = true
+mesh = SubResource("BoxMesh_8vjdo")
 
 [node name="SegmentationView" type="Node3D" unique_id=2114256631]
+
+[node name="MultiMeshInstance3D" type="MultiMeshInstance3D" parent="." unique_id=138066093 node_paths=PackedStringArray("camera")]
+multimesh = SubResource("MultiMesh_26ono")
 script = ExtResource("1_8s4yy")
+camera = NodePath("../TrackballCamera")
+
+[node name="TrackballCamera" type="Camera3D" parent="." unique_id=1354630892]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
+near = 0.001
+script = ExtResource("2_26ono")
+orbit_strength = 0.2
+zoom_enabled = false
+zoom_strength = 0.0
+metadata/_custom_type_script = "uid://demefs1tns4yw"
