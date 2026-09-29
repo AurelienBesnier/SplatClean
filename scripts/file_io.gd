@@ -265,6 +265,7 @@ func _process_in_background(file_path):
 	var output = []
 	var platform = OS.get_name()
 	var exit_code
+	
 	if platform == "Windows":
 		# TODO: make a powershell version
 		print("Cannot run bash scripts on windows")
@@ -278,12 +279,20 @@ func _on_process_finished(exit_code: int, output: Array):
 	print("exit code: ", exit_code)
 	if output.size() > 0:
 		print("Output:\n", output[0])
-	if exit_code==0 and FileAccess.file_exists("Archicrop.obj"): # Display result in seperate window
-		var load_thread = Thread.new()
-		var thread_callable = _load_window_background.bind()
-		load_thread.start(thread_callable)
+	if exit_code==0:
+		if FileAccess.file_exists("segmentation.json"): # read segmentation info
+			var file = FileAccess.open("segmentation.json", FileAccess.READ)
+			var json_string = file.get_as_text()
+			file.close()
+			var json = JSON.new()
+			var result = json.parse(json_string)
+			print(json.data)
+		if FileAccess.file_exists("Archicrop.obj"): # Display result in seperate window
+			var load_thread = Thread.new()
+			var thread_callable = _load_window_background_mesh.bind()
+			load_thread.start(thread_callable)
 		
-func _load_window_background():
+func _load_window_background_mesh():
 	var scene_resource = load("res://scenes/MeshView.tscn")
 	var scene_instance = scene_resource.instantiate()
 	
@@ -436,7 +445,7 @@ func parse_splat(path: String) -> void:
 		file.seek(splat_start_pos + splat_size)
 
 	file.close()
-	
+
 
 func parse_ply_header(path: String) -> void:
 	var file = FileAccess.open(path, FileAccess.READ)
@@ -524,3 +533,13 @@ func _prepare_binary_reading(file: FileAccess) -> void:
 		
 	file.close()
 	print("Rendered with colors and opacity successfully!")
+	
+func read_zip_file(file):
+	var reader = ZIPReader.new()
+	var err = reader.open(file)
+	if err != OK:
+		return PackedByteArray()
+	var filename = reader.get_files()[0]
+	var res = reader.read_file(filename)
+	reader.close()
+	return res
