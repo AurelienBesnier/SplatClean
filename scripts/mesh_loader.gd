@@ -14,7 +14,7 @@ func _ready() -> void:
 		self.mesh.surface_set_material(0, material)
 		update_camera_position()
 	else:
-		print("Error reading OBJ file")
+		printerr("Error reading OBJ file")
 
 func update_camera_position():
 	var max_position = self.mesh.get_aabb().get_longest_axis_size()

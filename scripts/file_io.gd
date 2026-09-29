@@ -286,6 +286,9 @@ func _on_process_finished(exit_code: int, output: Array):
 			file.close()
 			var json = JSON.new()
 			var result = json.parse(json_string)
+			if result != OK:
+				print("JSON Parse Error: ", json.get_error_message(), " at line ", json.get_error_line())
+				return
 			print(json.data)
 		if FileAccess.file_exists("Archicrop.obj"): # Display result in seperate window
 			var load_thread = Thread.new()
