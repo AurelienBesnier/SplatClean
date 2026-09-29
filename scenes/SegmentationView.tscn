@@ -5,6 +5,7 @@
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_26ono"]
 shading_mode = 0
+specular_mode = 2
 vertex_color_use_as_albedo = true
 
 [sub_resource type="BoxMesh" id="BoxMesh_8vjdo"]
@@ -27,6 +28,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
 near = 0.001
 script = ExtResource("2_26ono")
 orbit_strength = 0.2
-zoom_enabled = false
-zoom_strength = 0.0
+zoom_strength = 2.0
+zoom_maximum = 1000.0
 metadata/_custom_type_script = "uid://demefs1tns4yw"
