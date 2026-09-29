@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://bwokiaktipik0"]
+
+[ext_resource type="Script" uid="uid://ck1yfpsubljfv" path="res://scripts/segmentation_view.gd" id="1_8s4yy"]
+
+[node name="SegmentationView" type="Node3D" unique_id=2114256631]
+script = ExtResource("1_8s4yy")

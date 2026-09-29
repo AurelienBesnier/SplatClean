@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://banhwokdrg8ni" path="res://scripts/file_io.gd" id="1_tjwpk"]
 [ext_resource type="PackedScene" uid="uid://dvpuwpc3qipod" path="res://scenes/splat_scene.tscn" id="2_r67kn"]
 [ext_resource type="Texture2D" uid="uid://cts7l1f7ni4bu" path="res://assets/spinner.png" id="3_8n18e"]
-[ext_resource type="Script" uid="uid://n0xg45pych8o" path="res://scripts/spinner.gd" id="4_tjwpk"]
+[ext_resource type="Script" path="res://scripts/spinner.gd" id="4_tjwpk"]
 
 [node name="Control" type="Control" unique_id=1717159827]
 layout_mode = 3
