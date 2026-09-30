@@ -281,12 +281,9 @@ func _on_process_finished(exit_code: int, output: Array):
 		print("Output:\n", output[0])
 	if exit_code==0:
 		if FileAccess.file_exists("segmentation.json"): # read segmentation info
-			var file = FileAccess.open("segmentation.json", FileAccess.READ)
-			var json_string = file.get_as_text()
-			file.close()
-			var json = JSON.new()
-			var _result = json.parse(json_string)
-			print(json.data)
+			var load_thread = Thread.new()
+			var thread_callable = _load_window_background_segmentation.bind()
+			load_thread.start(thread_callable)
 		if FileAccess.file_exists("Archicrop.obj"): # Display result in seperate window
 			var load_thread = Thread.new()
 			var thread_callable = _load_window_background_mesh.bind()
@@ -304,7 +301,7 @@ func _load_window_background_segmentation():
 	new_window.add_child(scene_instance)
 	new_window.close_requested.connect(func(): new_window.queue_free())
 	get_tree().root.call_deferred("add_child", new_window)
-	new_window.position = DisplayServer.window_get_position() + Vector2i(50, 50)
+	new_window.position = DisplayServer.window_get_position() + Vector2i(-50, -50)
 		
 func _load_window_background_mesh():
 	var scene_resource = load("res://scenes/MeshView.tscn")
