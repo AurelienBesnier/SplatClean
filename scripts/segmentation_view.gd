@@ -46,7 +46,6 @@ func load_segmentation_at_runtime(file_path: String):
 		return
 	var data = json.data
 
-	var voxels_size = data['voxels_size']
 	var num_voxels = 0
 	var num_organs = len(data['voxel_organs'])
 	var colors = generate_palette(num_organs)
