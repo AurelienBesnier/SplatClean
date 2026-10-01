@@ -272,9 +272,8 @@ func _process_in_background(file_path):
 		print("Cannot run bash scripts on windows")
 		exit_code = 1
 	else:
-		var world_pos_indicator = self.global_transform * splat_mesh_instance.multimesh.get_instance_transform(splat_mesh_instance.index_indicator).origin
-		print(world_pos_indicator)
-		exit_code = OS.execute("bash", ["./scripts/processing.sh", file_path, camera_file_path, object_name.text, skip_filtering.button_pressed, world_pos_indicator], output, true, false)
+		var world_pos_indicator = splat_mesh_instance.global_transform * splat_mesh_instance.multimesh.get_instance_transform(splat_mesh_instance.index_indicator).origin
+		exit_code = OS.execute("bash", ["./scripts/processing.sh", file_path, camera_file_path, object_name.text, skip_filtering.button_pressed, str(world_pos_indicator)], output, true, false)
 	_on_process_finished.call_deferred(exit_code, output)
 
 func _on_process_finished(exit_code: int, output: Array):
