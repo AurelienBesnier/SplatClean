@@ -18,7 +18,7 @@ func _ready() -> void:
 func update_camera_position():
 	var max_position = self.multimesh.get_aabb().get_longest_axis_size()
 	var initial_position = camera.position
-	camera.position = Vector3(initial_position.x,initial_position.y,max_position)
+	camera.position = Vector3(initial_position.x,max_position/2,max_position)
 
 static func generate_palette(n: int, saturation: float = 0.7, value: float = 0.9):
 	var palette: Array[Color] = []
