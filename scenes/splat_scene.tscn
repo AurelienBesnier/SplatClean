@@ -60,6 +60,17 @@ shader_parameter/point_size = 10.0
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_hob4j"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_64yno"]
+shading_mode = 0
+albedo_color = Color(1, 0, 1, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_fkrde"]
+material = SubResource("StandardMaterial3D_64yno")
+radius = 0.005
+height = 0.01
+radial_segments = 8
+rings = 8
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ee4bf"]
 render_priority = 1
 shader = ExtResource("6_kwwq2")
@@ -115,15 +126,20 @@ multimesh = SubResource("MultiMesh_6a6wx")
 
 [node name="Splat" type="StaticBody3D" parent="Objects" unique_id=1620786543]
 
-[node name="SplatMeshInstance" type="MultiMeshInstance3D" parent="Objects/Splat" unique_id=1350058637]
+[node name="SplatMeshInstance" type="MultiMeshInstance3D" parent="Objects/Splat" unique_id=1350058637 node_paths=PackedStringArray("camera", "indicator")]
 cast_shadow = 0
 multimesh = SubResource("MultiMesh_0fbet")
 script = ExtResource("6_rl1er")
+camera = NodePath("../../../Camera3D")
+indicator = NodePath("../../Indicator")
 splat_material = SubResource("ShaderMaterial_l318y")
 point_material = SubResource("ShaderMaterial_nndnu")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Objects/Splat" unique_id=621479254]
 shape = SubResource("BoxShape3D_hob4j")
+
+[node name="Indicator" type="MeshInstance3D" parent="Objects" unique_id=499980567]
+mesh = SubResource("SphereMesh_fkrde")
 
 [node name="CropBox" type="Area3D" parent="." unique_id=152878896]
 input_capture_on_drag = true
