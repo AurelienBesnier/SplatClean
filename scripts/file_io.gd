@@ -9,6 +9,7 @@ extends Control
 @onready var render_mode: OptionButton = $"VBoxContainer/ToolContainer/RenderOptions"
 
 @onready var splat_mesh_instance: MultiMeshInstance3D = $VBoxContainer/SubViewportContainer/SubViewport/SplatScene/Objects/Splat/SplatMeshInstance
+
 @onready var camera_mesh_instance: MultiMeshInstance3D = $VBoxContainer/SubViewportContainer/SubViewport/SplatScene/Objects/CameraMeshInstance
 @onready var crop_box: MeshInstance3D = $VBoxContainer/SubViewportContainer/SubViewport/SplatScene/CropBox/CropBox
 @onready var crop_sphere: MeshInstance3D = $VBoxContainer/SubViewportContainer/SubViewport/SplatScene/CropSphere
@@ -271,7 +272,9 @@ func _process_in_background(file_path):
 		print("Cannot run bash scripts on windows")
 		exit_code = 1
 	else:
-		exit_code = OS.execute("bash", ["./scripts/processing.sh", file_path, camera_file_path, object_name.text, skip_filtering.button_pressed], output, true, false)
+		var world_pos_indicator = self.global_transform * splat_mesh_instance.multimesh.get_instance_transform(splat_mesh_instance.index_indicator).origin
+		print(world_pos_indicator)
+		exit_code = OS.execute("bash", ["./scripts/processing.sh", file_path, camera_file_path, object_name.text, skip_filtering.button_pressed, world_pos_indicator], output, true, false)
 	_on_process_finished.call_deferred(exit_code, output)
 
 func _on_process_finished(exit_code: int, output: Array):
