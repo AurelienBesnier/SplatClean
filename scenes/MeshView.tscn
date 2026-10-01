@@ -20,6 +20,7 @@ camera = NodePath("../TrackballCamera")
 [node name="TrackballCamera" type="Camera3D" parent="." unique_id=419741164]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
 script = ExtResource("2_ae8pf")
+zoom_enabled = false
 zoom_strength = 5.0
 zoom_maximum = 1000.0
 metadata/_custom_type_script = "uid://demefs1tns4yw"
